@@ -149,7 +149,7 @@ public void Linq3()
             products))
 
   (println "In-stock products that cost more than 3.00:")
-  (doseq [p sold-out-products]
+  (doseq [p expensive-in-stock-products]
     (println (:product-name p) "is in stock and costs more than 3.00"))
 )
 ```
