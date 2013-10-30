@@ -61,13 +61,11 @@ public void Linq1()
 ```clojure
 //clojure
 (defn linq1 []
-  (def numbers [4 5 1 3 9 8 6 7 2 0])
-
-  (def low-nums (filter #(< % 5) numbers))
-
-  (println "Numbers < 5:")
-  (doall (map println low-nums))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        low-numbers (for [n numbers :when (< n 5)] n)]
+    (println "Numbers < 5:")
+    (doseq [n low-numbers]
+      (println n))))
 ```
 #### Output
 
@@ -100,15 +98,13 @@ public void Linq2()
 ```clojure
 //clojure
 (defn linq2 []
-  (def products products-list)
-  (def sold-out-products
-    (filter #(= 0 (:units-in-stock %))
-            products))
-
-  (println "Sold out products:")
-  (doseq [p sold-out-products]
-    (println (:product-name p) " is sold out"))
-)
+  (let [products products-list
+        sold-out-products (for [p products
+                                :when (= 0 (:units-in-stock p))]
+                            p)]
+    (println "Sold out products:")
+    (doseq [p sold-out-products]
+      (println (:product-name p) " is sold out"))))
 ```
 #### Output
 
@@ -141,26 +137,25 @@ public void Linq3()
 ```clojure
 //clojure
 (defn linq3 []
-  (def products products-list)
-  (def expensive-in-stock-products
-    (filter #(and
-               (> 0 (:units-in-stock %))
-               (> 3 (:unit-price %)))
-            products))
-
-  (println "In-stock products that cost more than 3.00:")
-  (doseq [p expensive-in-stock-products]
-    (println (:product-name p) "is in stock and costs more than 3.00"))
-)
+  (let [products products-list
+        expensive-in-stock-products
+        (for [p products-list
+              :when (and
+                     (> (:units-in-stock p) 0)
+                     (> (:unit-price p) 3))]
+          p)]
+    (println "In-stock products that cost more than 3.00:")
+    (doseq [p expensive-in-stock-products]
+      (println (:product-name p) "is in stock and costs more than 3.00"))))
 ```
 #### Output
 
     In-stock products that cost more than 3.00:
-    Chef Anton's Gumbo Mix is in stock and costs more than 3.00
-    Alice Mutton is in stock and costs more than 3.00
-    Thüringer Rostbratwurst is in stock and costs more than 3.00
-    Gorgonzola Telino is in stock and costs more than 3.00
-    Perth Pasties is in stock and costs more than 3.00
+    Chai is in stock and costs more than 3.00
+    Chang is in stock and costs more than 3.00
+    Aniseed Syrup is in stock and costs more than 3.00
+    Chef Anton's Cajun Seasoning is in stock and costs more than 3.00
+    Grandma's Boysenberry Spread is in stock and costs more than 3.00
 
 ### linq4: Where - Drilldown
 ```csharp
@@ -196,9 +191,7 @@ public void Linq4()
   (doseq [c wa-customers]
     (println "Customer" (:customer-id c) ": " (:company-name c) ":")
     (doseq [o (:orders c)]
-      (println "    Order" (:order-id o) ":" (:order-date o)))
-  )
-)
+      (println "    Order" (:order-id o) ":" (:order-date o)))))
 ```
 #### Output
 
@@ -231,16 +224,14 @@ public void Linq5()
 ```clojure
 //clojure
 (defn linq5 []
-  (def digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"])
-  (def short-digits
-    (map last
-         (filter (fn [[i digit]] (> i (count digit)))
-                 (map-indexed (fn [i digit] [i digit]) digits))))
-
-  (println "Short digits:")
-  (doseq [d short-digits]
-    (println "The word" d "is shorter than its value"))
-)
+  (let [digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
+        short-digits
+        (for [[i digit] (map-indexed (fn [i digit] [i digit]) digits)
+              :when (> i (count digit))]
+          digit)]
+    (println "Short digits:")
+    (doseq [d short-digits]
+      (println "The word" d "is shorter than its value"))))
 ```
 #### Output
 
@@ -276,12 +267,10 @@ public void Linq6()
 ```clojure
 //clojure
 (defn linq6 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def nums-plus-one (map inc numbers))
-
-  (println "Numbers + 1:")
-  (doall (map println nums-plus-one))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        nums-plus-one (map inc numbers)]
+    (println "Numbers + 1:")
+    (doseq [n nums-plus-one] (println n))))
 ```
 #### Output
 
@@ -318,12 +307,10 @@ public void Linq7()
 ```clojure
 //clojure
 (defn linq7 []
-  (def products products-list)
-  (def product-names (map #(:product-name %) products))
-
-  (println "Product Names:")
-  (doall (map println product-names))
-)
+  (let [products products-list
+        product-names (map #(:product-name %) products)]
+    (println "Product Names:")
+    (doseq [x product-names] (println x))))
 ```
 #### Output
 
@@ -357,14 +344,11 @@ public void Linq8()
 ```clojure
 //clojure
 (defn linq8 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def strings ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"])
-
-  (def text-nums (map #(strings %) numbers))
-
-  (println "Number strings:")
-  (doall (map println text-nums))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        strings ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
+        text-nums (map #(strings %) numbers)]
+    (println "Number strings:")
+    (doseq [n text-nums] (println n))))
 ```
 #### Output
 
@@ -400,14 +384,11 @@ public void Linq9()
 ```clojure
 //clojure
 (defn linq9 []
-  (def words ["aPPLE", "BlUeBeRrY", "cHeRry"])
-
-  (def upper-lower-words
-    (map #(hash-map :lower (str/lower-case %), :upper (str/upper-case %)) words))
-
-  (doseq [ul upper-lower-words]
-    (println "Uppercase:" (:upper ul) ", Lowercase:" (:lower ul)))
-)
+  (let [words ["aPPLE", "BlUeBeRrY", "cHeRry"]
+        upper-lower-words
+        (for [w words] { :lower (str/lower-case w), :upper (str/upper-case w)})]    
+    (doseq [ul upper-lower-words]
+      (println "Uppercase:" (:upper ul) ", Lowercase:" (:lower ul)))))
 ```
 #### Output
 
@@ -436,15 +417,12 @@ public void Linq10()
 ```clojure
 //clojure
 (defn linq10 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def strings ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"])
-
-  (def digit-odd-evens
-    (map (fn [n] {:digit (strings n), :even (= (mod n 2) 0)}) numbers))
-
-  (doseq [d digit-odd-evens]
-    (println "The digit" (:digit d) "is" (if (:even d) "even" "odd")))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        strings ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
+        digit-odd-evens
+        (for [n numbers] {:digit (strings n), :even (= (mod n 2) 0)})]
+    (doseq [d digit-odd-evens]
+      (println "The digit" (:digit d) "is" (if (:even d) "even" "odd")))))
 ```
 #### Output
 
@@ -480,15 +458,13 @@ public void Linq11()
 ```clojure
 //clojure
 (defn linq11 []
-  (def products products-list)
-
-  (def product-infos
-    (map #(hash-map :product-name (:product-name %), :category (:category %), :price (:unit-price %)) products))
-
-  (println "Product Info:")
-  (doseq [p product-infos]
-    (println (:product-name p) "is in the category" (:category p) "and costs" (:price p)))
-)
+  (let [products products-list
+        product-infos
+        (for [p products] 
+          {:product-name (:product-name p), :category (:category p), :price (:unit-price p)})]
+    (println "Product Info:")
+    (doseq [p product-infos]
+      (println (:product-name p) "is in the category" (:category p) "and costs" (:price p)))))
 ```
 #### Output
 
@@ -517,15 +493,12 @@ public void Linq12()
 ```clojure
 //clojure
 (defn linq12 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-
-  (def nums-in-place
-    (map-indexed (fn [i num] {:num num, :in-place (= num i)}) numbers))
-
-  (println "Number: In-place?")
-  (doseq [n nums-in-place]
-    (println (:num n) ":" (:in-place n)))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        nums-in-place
+        (map-indexed (fn [i num] {:num num, :in-place (= num i)}) numbers)]
+    (println "Number: In-place?")
+    (doseq [n nums-in-place]
+      (println (:num n) ":" (:in-place n)))))
 ```
 #### Output
 
@@ -564,15 +537,13 @@ public void Linq13()
 ```clojure
 //clojure
 (defn linq13 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"])
-
-  (def low-nums
-    (map #(digits %) (filter #(< % 5) numbers)))
-
-  (println "Numbers < 5:")
-  (doall (map println low-nums))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
+        low-nums (for [n numbers 
+                       :when (< n 5)] 
+                   (digits n))]
+    (println "Numbers < 5:")
+    (doseq [n low-nums] (println n))))
 ```
 #### Output
 
@@ -607,19 +578,16 @@ public void Linq14()
 ```clojure
 //clojure
 (defn linq14 []
-  (def numbers-a [0 2 4 5 6 8 9])
-  (def numbers-b [1 3 5 7 8])
-
-  (def pairs
-    (flatten
-      (map (fn [a] (map #(hash-map :a a, :b %)
-                   (filter #(< a %) numbers-b)))
-           numbers-a)))
-
-  (println "Pairs where a < b:")
-  (doseq [pair pairs]
-    (println (:a pair) "is less than" (:b pair)))
-)
+  (let [numbers-a [0 2 4 5 6 8 9]
+        numbers-b [1 3 5 7 8]
+        pairs
+        (flatten
+         (for [a numbers-a]
+           (for [b numbers-b :when (< a b)]
+             {:a a, :b b})))]
+    (println "Pairs where a < b:")
+    (doseq [pair pairs]
+      (println (:a pair) "is less than" (:b pair)))))
 ```
 #### Output
 
@@ -660,25 +628,23 @@ public void Linq15()
 ```clojure
 //clojure
 (defn linq15 []
-  (def customers customers-list)
-
-  (def orders
-    (flatten
-     (map
-      (fn [c]
-        (map #(hash-map :customer-id (:customer-id c), :order-id (:order-id %), :total (:total %))
-             (filter #(< (:total %) 500) (:orders c))))
-      customers)))
-
-  (doall (map println orders))
-)
+  (let [customers customers-list
+        orders
+        (flatten
+         (for [c customers]
+           (for [o (:orders c) 
+                 :when (< (:total o) 500)]
+             {:customer-id (:customer-id c), 
+              :order-id (:order-id o), 
+              :total (:total o)})))]
+    (doseq [o orders] (println o))))
 ```
 #### Output
 
-    {:order-id 10702, :total 330.00M, :customer-id ALFKI}
-    {:order-id 10952, :total 471.20M, :customer-id ALFKI}
-    {:order-id 10308, :total 88.80M, :customer-id ANATR}
-    {:order-id 10625, :total 479.75M, :customer-id ANATR}
+    {:customer-id ALFKI, :order-id 10702, :total 330.00M}
+    {:customer-id ALFKI, :order-id 10952, :total 471.20M}
+    {:customer-id ANATR, :order-id 10308, :total 88.80M}
+    {:customer-id ANATR, :order-id 10625, :total 479.75M}
     ...
 
 ### linq16: SelectMany - Compound from 3
@@ -700,27 +666,24 @@ public void Linq16()
 ```clojure
 //clojure
 (defn linq16 []
-  (def customers customers-list)
-
-  (def orders
-    (flatten
-     (map
-      (fn [c]
-        (map #(hash-map :customer-id (:customer-id c), :order-id (:order-id %), :order-date (:order-date %))
-             (filter #(time/after? (:order-date %) (time/date-time 1998 1 1))
-                     (:orders c))))
-      customers)))
-
-  (doall (map println orders))
-)
+  (let [customers customers-list
+        orders
+        (flatten
+         (for [c customers]
+           (for [o (:orders c)
+                 :when (time/after? (:order-date o) (time/date-time 1998 1 1))]
+             {:customer-id (:customer-id c), 
+              :order-id (:order-id o), 
+              :order-date (:order-date o)})))]
+    (doseq [o orders] (println o))))
 ```
 #### Output
 
-    {:order-id 10835, :customer-id ALFKI, :order-date #<DateTime 1998-01-15T00:00:00.000-05:00>}
-    {:order-id 10952, :customer-id ALFKI, :order-date #<DateTime 1998-03-16T00:00:00.000-05:00>}
-    {:order-id 11011, :customer-id ALFKI, :order-date #<DateTime 1998-04-09T00:00:00.000-04:00>}
-    {:order-id 10926, :customer-id ANATR, :order-date #<DateTime 1998-03-04T00:00:00.000-05:00>}
-    {:order-id 10856, :customer-id ANTON, :order-date #<DateTime 1998-01-28T00:00:00.000-05:00>}
+    {:customer-id ALFKI, :order-id 10835, :order-date #<DateTime 1998-01-15T00:00:00.000-05:00>}
+    {:customer-id ALFKI, :order-id 10952, :order-date #<DateTime 1998-03-16T00:00:00.000-05:00>}
+    {:customer-id ALFKI, :order-id 11011, :order-date #<DateTime 1998-04-09T00:00:00.000-04:00>}
+    {:customer-id ANATR, :order-id 10926, :order-date #<DateTime 1998-03-04T00:00:00.000-05:00>}
+    {:customer-id ANTON, :order-id 10856, :order-date #<DateTime 1998-01-28T00:00:00.000-05:00>}
     ...
 
 ### linq17: SelectMany - from Assignment
@@ -742,26 +705,22 @@ public void Linq17()
 ```clojure
 //clojure
 (defn linq17 []
-  (def customers customers-list)
-
-  (def orders
-    (flatten
-     (map
-      (fn [c]
-        (map #(hash-map :customer-id (:customer-id c), :order-id (:order-id %), :total (:total %))
-             (filter #(>= (:total %) 2000) (:orders c))))
-      customers)))
-
-  (doall (map println orders))
-)
+  (let [customers customers-list
+        orders
+        (flatten
+         (for [c customers]
+           (for [o (:orders c)
+                 :when (>= (:total o) 2000)]
+             {:customer-id (:customer-id c), :order-id (:order-id o), :total (:total o)})))]
+    (doseq [o orders] (println o))))
 ```
 #### Output
 
-    {:order-id 10573, :total 2082.00M, :customer-id ANTON}
-    {:order-id 10558, :total 2142.90M, :customer-id AROUT}
-    {:order-id 10953, :total 4441.25M, :customer-id AROUT}
-    {:order-id 10384, :total 2222.40M, :customer-id BERGS}
-    {:order-id 10524, :total 3192.65M, :customer-id BERGS}
+    {:customer-id ANTON, :order-id 10573, :total 2082.00M}
+    {:customer-id AROUT, :order-id 10558, :total 2142.90M}
+    {:customer-id AROUT, :order-id 10953, :total 4441.25M}
+    {:customer-id BERGS, :order-id 10384, :total 2222.40M}
+    {:customer-id BERGS, :order-id 10524, :total 3192.65M}
     ...
 
 ### linq18: SelectMany - Multiple from
@@ -786,40 +745,36 @@ public void Linq18()
 ```clojure
 //clojure
 (defn linq18 []
-  (def customers customers-list)
-  (def cutoff-date (time/date-time 1997 1 1))
-
-  (def orders
-    (flatten
-     (map
-      (fn [c]
-        (map #(hash-map :customer-id (:customer-id c), :order-id (:order-id %))
-             (filter #(time/after? (:order-date %) cutoff-date)
-                     (:orders c))))
-      (filter #(= (:region %) "WA") customers))))
-
-  (doall (map println orders))
-)
+  (let [customers customers-list
+        cutoff-date (time/date-time 1997 1 1)
+        orders
+        (flatten
+         (for [c customers 
+               :when (= (:region c) "WA")]
+           (for [o (:orders c)
+                 :when (time/after? (:order-date o) cutoff-date)]
+             {:customer-id (:customer-id c), :order-id (:order-id o)})))]
+    (doseq [o orders] (println o))))
 ```
 #### Output
 
-    {:order-id 10482, :customer-id LAZYK}
-    {:order-id 10545, :customer-id LAZYK}
-    {:order-id 10574, :customer-id TRAIH}
-    {:order-id 10577, :customer-id TRAIH}
-    {:order-id 10822, :customer-id TRAIH}
-    {:order-id 10469, :customer-id WHITC}
-    {:order-id 10483, :customer-id WHITC}
-    {:order-id 10504, :customer-id WHITC}
-    {:order-id 10596, :customer-id WHITC}
-    {:order-id 10693, :customer-id WHITC}
-    {:order-id 10696, :customer-id WHITC}
-    {:order-id 10723, :customer-id WHITC}
-    {:order-id 10740, :customer-id WHITC}
-    {:order-id 10861, :customer-id WHITC}
-    {:order-id 10904, :customer-id WHITC}
-    {:order-id 11032, :customer-id WHITC}
-    {:order-id 11066, :customer-id WHITC}
+    {:customer-id LAZYK, :order-id 10482}
+    {:customer-id LAZYK, :order-id 10545}
+    {:customer-id TRAIH, :order-id 10574}
+    {:customer-id TRAIH, :order-id 10577}
+    {:customer-id TRAIH, :order-id 10822}
+    {:customer-id WHITC, :order-id 10469}
+    {:customer-id WHITC, :order-id 10483}
+    {:customer-id WHITC, :order-id 10504}
+    {:customer-id WHITC, :order-id 10596}
+    {:customer-id WHITC, :order-id 10693}
+    {:customer-id WHITC, :order-id 10696}
+    {:customer-id WHITC, :order-id 10723}
+    {:customer-id WHITC, :order-id 10740}
+    {:customer-id WHITC, :order-id 10861}
+    {:customer-id WHITC, :order-id 10904}
+    {:customer-id WHITC, :order-id 11032}
+    {:customer-id WHITC, :order-id 11066}
 
 ### linq19: SelectMany - Indexed
 ```csharp
@@ -840,18 +795,15 @@ public void Linq19()
 ```clojure
 //clojure
 (defn linq19 []
-  (def customers customers-list)
-
-  (def customer-orders
-    (flatten
-     (map-indexed
-      (fn [i c]
-        (map #(str "Customer #" (inc i) " has an order with OrderID " (:order-id %))
-             (:orders c)))
-      customers)))
-
-  (doall (map println customer-orders))
-)
+  (let [customers customers-list
+        customer-orders
+        (flatten
+         (map-indexed
+          (fn [i c]
+            (map #(str "Customer #" (inc i) " has an order with OrderID " (:order-id %))
+                 (:orders c)))
+          customers))]
+    (doseq [x customer-orders] (println x))))
 ```
 #### Output
 
@@ -902,12 +854,10 @@ public void Linq20()
 ```clojure
 //clojure
 (defn linq20 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def first-3-numbers (take 3 numbers))
-
-  (println "First 3 numbers:")
-  (doall (map println first-3-numbers))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        first-3-numbers (take 3 numbers)]
+    (println "First 3 numbers:")
+    (doseq [n first-3-numbers] (println n))))
 ```
 #### Output
 
@@ -940,28 +890,25 @@ public void Linq21()
 ```clojure
 //clojure
 (defn linq21 []
-  (def customers customers-list)
-
-  (def first-3-wa-orders
-    (take 3 (flatten
-     (map
-      (fn [c]
-        (map #(hash-map :customer-id (:customer-id c),
-                        :order-id (:order-id %),
-                        :order-date (:order-date %))
-             (:orders c)))
-      (filter #(= (:region %) "WA") customers)))))
-
-  (println "First 3 orders in WA:")
-  (doall (map println first-3-wa-orders))
-)
+  (let [customers customers-list
+        first-3-wa-orders
+        (take 3 
+              (flatten
+               (for [c customers 
+                     :when (= (:region c) "WA")]
+                 (for [o (:orders c)]
+                   {:customer-id (:customer-id c),
+                    :order-id (:order-id o),
+                    :order-date (:order-date o)}))))]
+    (println "First 3 orders in WA:")
+    (doseq [x first-3-wa-orders] (println x))))
 ```
 #### Output
 
     First 3 orders in WA:
-    {:order-id 10482, :customer-id LAZYK, :order-date #<DateTime 1997-03-21T00:00:00.000-05:00>}
-    {:order-id 10545, :customer-id LAZYK, :order-date #<DateTime 1997-05-22T00:00:00.000-04:00>}
-    {:order-id 10574, :customer-id TRAIH, :order-date #<DateTime 1997-06-19T00:00:00.000-04:00>}
+    {:customer-id LAZYK, :order-id 10482, :order-date #<DateTime 1997-03-21T00:00:00.000-05:00>}
+    {:customer-id LAZYK, :order-id 10545, :order-date #<DateTime 1997-05-22T00:00:00.000-04:00>}
+    {:customer-id TRAIH, :order-id 10574, :order-date #<DateTime 1997-06-19T00:00:00.000-04:00>}
 
 ### linq22: Skip - Simple
 ```csharp
@@ -982,12 +929,10 @@ public void Linq22()
 ```clojure
 //clojure
 (defn linq22 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def all-but-first-4-numbers (drop 4 numbers))
-
-  (println "All but first 4 numbers:")
-  (doall (map println all-but-first-4-numbers))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        all-but-first-4-numbers (drop 4 numbers)]
+    (println "All but first 4 numbers:")
+    (doseq [n all-but-first-4-numbers] (println n))))
 ```
 #### Output
 
@@ -1024,42 +969,38 @@ public void Linq23()
 ```clojure
 //clojure
 (defn linq23 []
-  (def customers customers-list)
-
-  (def all-but-first-2-orders
-    (drop 2 (flatten
-     (map
-      (fn [c]
-        (map #(hash-map :customer-id (:customer-id c),
-                        :order-id (:order-id %),
-                        :order-date (:order-date %))
-             (:orders c)))
-      (filter #(= (:region %) "WA") customers)))))
-
-  (println "All but first 2 orders in WA:")
-  (doall (map println all-but-first-2-orders))
-)
+  (let [customers customers-list
+        all-but-first-2-orders
+        (drop 2 (flatten
+                 (for [c customers
+                       :when (= (:region c) "WA")]
+                   (for [o (:orders c)]
+                     {:customer-id (:customer-id c),
+                      :order-id (:order-id o),
+                      :order-date (:order-date o)}))))]
+    (println "All but first 2 orders in WA:")
+    (doseq [o all-but-first-2-orders] (println o))))
 ```
 #### Output
 
     All but first 2 orders in WA:
-    {:order-id 10574, :customer-id TRAIH, :order-date #<DateTime 1997-06-19T00:00:00.000-04:00>}
-    {:order-id 10577, :customer-id TRAIH, :order-date #<DateTime 1997-06-23T00:00:00.000-04:00>}
-    {:order-id 10822, :customer-id TRAIH, :order-date #<DateTime 1998-01-08T00:00:00.000-05:00>}
-    {:order-id 10269, :customer-id WHITC, :order-date #<DateTime 1996-07-31T00:00:00.000-04:00>}
-    {:order-id 10344, :customer-id WHITC, :order-date #<DateTime 1996-11-01T00:00:00.000-05:00>}
-    {:order-id 10469, :customer-id WHITC, :order-date #<DateTime 1997-03-10T00:00:00.000-05:00>}
-    {:order-id 10483, :customer-id WHITC, :order-date #<DateTime 1997-03-24T00:00:00.000-05:00>}
-    {:order-id 10504, :customer-id WHITC, :order-date #<DateTime 1997-04-11T00:00:00.000-04:00>}
-    {:order-id 10596, :customer-id WHITC, :order-date #<DateTime 1997-07-11T00:00:00.000-04:00>}
-    {:order-id 10693, :customer-id WHITC, :order-date #<DateTime 1997-10-06T00:00:00.000-04:00>}
-    {:order-id 10696, :customer-id WHITC, :order-date #<DateTime 1997-10-08T00:00:00.000-04:00>}
-    {:order-id 10723, :customer-id WHITC, :order-date #<DateTime 1997-10-30T00:00:00.000-05:00>}
-    {:order-id 10740, :customer-id WHITC, :order-date #<DateTime 1997-11-13T00:00:00.000-05:00>}
-    {:order-id 10861, :customer-id WHITC, :order-date #<DateTime 1998-01-30T00:00:00.000-05:00>}
-    {:order-id 10904, :customer-id WHITC, :order-date #<DateTime 1998-02-24T00:00:00.000-05:00>}
-    {:order-id 11032, :customer-id WHITC, :order-date #<DateTime 1998-04-17T00:00:00.000-04:00>}
-    {:order-id 11066, :customer-id WHITC, :order-date #<DateTime 1998-05-01T00:00:00.000-04:00>}
+    {:customer-id TRAIH, :order-id 10574, :order-date #<DateTime 1997-06-19T00:00:00.000-04:00>}
+    {:customer-id TRAIH, :order-id 10577, :order-date #<DateTime 1997-06-23T00:00:00.000-04:00>}
+    {:customer-id TRAIH, :order-id 10822, :order-date #<DateTime 1998-01-08T00:00:00.000-05:00>}
+    {:customer-id WHITC, :order-id 10269, :order-date #<DateTime 1996-07-31T00:00:00.000-04:00>}
+    {:customer-id WHITC, :order-id 10344, :order-date #<DateTime 1996-11-01T00:00:00.000-05:00>}
+    {:customer-id WHITC, :order-id 10469, :order-date #<DateTime 1997-03-10T00:00:00.000-05:00>}
+    {:customer-id WHITC, :order-id 10483, :order-date #<DateTime 1997-03-24T00:00:00.000-05:00>}
+    {:customer-id WHITC, :order-id 10504, :order-date #<DateTime 1997-04-11T00:00:00.000-04:00>}
+    {:customer-id WHITC, :order-id 10596, :order-date #<DateTime 1997-07-11T00:00:00.000-04:00>}
+    {:customer-id WHITC, :order-id 10693, :order-date #<DateTime 1997-10-06T00:00:00.000-04:00>}
+    {:customer-id WHITC, :order-id 10696, :order-date #<DateTime 1997-10-08T00:00:00.000-04:00>}
+    {:customer-id WHITC, :order-id 10723, :order-date #<DateTime 1997-10-30T00:00:00.000-05:00>}
+    {:customer-id WHITC, :order-id 10740, :order-date #<DateTime 1997-11-13T00:00:00.000-05:00>}
+    {:customer-id WHITC, :order-id 10861, :order-date #<DateTime 1998-01-30T00:00:00.000-05:00>}
+    {:customer-id WHITC, :order-id 10904, :order-date #<DateTime 1998-02-24T00:00:00.000-05:00>}
+    {:customer-id WHITC, :order-id 11032, :order-date #<DateTime 1998-04-17T00:00:00.000-04:00>}
+    {:customer-id WHITC, :order-id 11066, :order-date #<DateTime 1998-05-01T00:00:00.000-04:00>}
 
 ### linq24: TakeWhile - Simple
 ```csharp
@@ -1080,12 +1021,10 @@ public void Linq24()
 ```clojure
 //clojure
 (defn linq24 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def first-numbers-less-than-6 (take-while #(< % 6) numbers))
-
-  (println "First numbers less than 6:")
-  (doall (map println first-numbers-less-than-6))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        first-numbers-less-than-6 (take-while #(< % 6) numbers)]
+    (println "First numbers less than 6:")
+    (doseq [n first-numbers-less-than-6] (println n))))
 ```
 #### Output
 
@@ -1114,14 +1053,12 @@ public void Linq25()
 ```clojure
 //clojure
 (defn linq25 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def first-small-numbers
-    (map (fn [[i num]] num)
-      (take-while (fn [[i num]] (>= num i)) (with-index numbers))))
-
-  (println "First numbers not less than their position:")
-  (doall (map println first-small-numbers))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        first-small-numbers
+        (map (fn [[i num]] num)
+             (take-while (fn [[i num]] (>= num i)) (with-index numbers)))]
+    (println "First numbers not less than their position:")
+  (doseq [n first-small-numbers] (println n))))
 ```
 #### Output
 
@@ -1148,12 +1085,10 @@ public void Linq26()
 ```clojure
 //clojure
 (defn linq26 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def all-but-first-3-numbers (drop-while #(not= (mod % 3) 0) numbers))
-
-  (println "All elements starting from first element divisible by 3:")
-  (doall (map println all-but-first-3-numbers))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        all-but-first-3-numbers (drop-while #(not= (mod % 3) 0) numbers)]
+    (println "All elements starting from first element divisible by 3:")
+    (doseq [n all-but-first-3-numbers] (println n))))
 ```
 #### Output
 
@@ -1185,14 +1120,12 @@ public void Linq27()
 ```clojure
 //clojure
 (defn linq27 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def later-numbers
-    (map (fn [[i num]] num)
-      (drop-while (fn [[i num]] (>= num i)) (with-index numbers))))
-
-  (println "All elements starting from first element less than its position:")
-  (doall (map println later-numbers))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        later-numbers
+        (map (fn [[i num]] num)
+             (drop-while (fn [[i num]] (>= num i)) (with-index numbers)))]
+    (println "All elements starting from first element less than its position:")
+    (doseq [n later-numbers] (println n))))
 ```
 #### Output
 
@@ -1262,12 +1195,10 @@ public void Linq28()
 ```clojure
 //clojure
 (defn linq28 []
-  (def words ["cherry" "apple" "blueberry"])
-  (def sorted-words (sort words))
-
-  (println "The sorted list of words:")
-  (doall (map println sorted-words))
-)
+  (let [words ["cherry" "apple" "blueberry"]
+        sorted-words (sort words)]
+    (println "The sorted list of words:")
+    (doseq [w sorted-words] (println w))))
 ```
 #### Output
 
@@ -1298,12 +1229,10 @@ public void Linq29()
 ```clojure
 //clojure
 (defn linq29 []
-  (def words ["cherry" "apple" "blueberry"])
-  (def sorted-words (sort-by count words))
-
-  (println "The sorted list of words (by length):")
-  (doall (map println sorted-words))
-)
+  (let [words ["cherry" "apple" "blueberry"]
+        sorted-words (sort-by count words)]
+    (println "The sorted list of words (by length):")
+    (doseq [w sorted-words] (println w))))
 ```
 #### Output
 
@@ -1330,11 +1259,9 @@ public void Linq30()
 ```clojure
 //clojure
 (defn linq30 []
-  (def products products-list)
-  (def sorted-products (sort-by :product-name products))
-
-  (doall (map println sorted-products))
-)
+  (let [products products-list
+        sorted-products (sort-by :product-name products)]
+    (doseq [p sorted-products] (println p))))
 ```
 #### Output
 
@@ -1360,11 +1287,9 @@ public void Linq31()
 ```clojure
 //clojure
 (defn linq31 []
-  (def words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"])
-  (def sorted-words (sort-by identity case-insensitive-compare words))
-
-  (doall (map println sorted-words))
-)
+  (let [words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"]
+        sorted-words (sort-by identity case-insensitive-compare words)]
+    (doseq [w sorted-words] (println w))))
 ```
 #### Output
 
@@ -1397,12 +1322,10 @@ public void Linq32()
 ```clojure
 //clojure
 (defn linq32 []
-  (def dbls [1.7 2.3 1.9 4.1 2.9])
-  (def sorted-doubles (reverse (sort dbls)))
-
-  (println "The doubles from highest to lowest:")
-  (doall (map println sorted-doubles))
-)
+  (let [dbls [1.7 2.3 1.9 4.1 2.9]
+        sorted-doubles (reverse (sort dbls))]
+    (println "The doubles from highest to lowest:")
+    (doseq [d sorted-doubles] (println d))))
 ```
 #### Output
 
@@ -1431,11 +1354,9 @@ public void Linq33()
 ```clojure
 //clojure
 (defn linq33 []
-  (def products products-list)
-  (def sorted-products (reverse (sort-by :units-in-stock products)))
-
-  (doall (map println sorted-products))
-)
+  (let [products products-list
+        sorted-products (reverse (sort-by :units-in-stock products))]
+    (doseq [p sorted-products] (println p))))
 ```
 #### Output
 
@@ -1461,13 +1382,11 @@ public void Linq34()
 ```clojure
 //clojure
 (defn linq34 []
-  (def words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"])
-  (def sorted-words (->> words
-                         (sort-by identity case-insensitive-compare)
-                         reverse))
-
-  (doall (map println sorted-words))
-)
+  (let [words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"]
+        sorted-words (->> words
+                          (sort-by identity case-insensitive-compare)
+                          reverse)]
+    (doseq [w sorted-words] (println w))))
 ```
 #### Output
 
@@ -1500,13 +1419,10 @@ public void Linq35()
 ```clojure
 //clojure
 (defn linq35 []
-  (def digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"])
-
-  (def sorted-digits (order-by [count identity] digits))
-
-  (println "Sorted digits:")
-  (doall (map println sorted-digits))
-)
+  (let [digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
+        sorted-digits (order-by [count identity] digits)]
+    (println "Sorted digits:")
+    (doseq [d sorted-digits] (println d))))
 ```
 #### Output
 
@@ -1539,11 +1455,9 @@ public void Linq36()
 ```clojure
 //clojure
 (defn linq36 []
-  (def words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"])
-  (def sorted-words (order-by [count (fn [x] (.toLowerCase x))] words))
-
-  (doall (map println sorted-words))
-)
+  (let [words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"]
+        sorted-words (order-by [count (fn [x] (.toLowerCase x))] words)]
+    (doseq [w sorted-words] (println w))))
 ```
 #### Output
 
@@ -1572,11 +1486,9 @@ public void Linq37()
 ```clojure
 //clojure
 (defn linq37 []
-  (def products products-list)
-  (def sorted-products (order-by [:category #(* -1 (:unit-price  %))] products))
-
-  (doall (map println sorted-products))
-)
+  (let [products products-list
+        sorted-products (order-by [:category #(* -1 (:unit-price  %))] products)]
+    (doseq [p sorted-products] (println p))))
 ```
 #### Output
 
@@ -1608,14 +1520,12 @@ public void Linq38()
 ```clojure
 //clojure
 (defn linq38 []
-  (def words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"])
-  (def sorted-words (order-by-comparers
-                     [#(compare (count %1) (count %2))
-                      #(case-insensitive-compare %2 %1)]
-                     words))
-
-  (doall (map println sorted-words))
-)
+  (let [words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"]
+        sorted-words (order-by-comparers
+                      [#(compare (count %1) (count %2))
+                       #(case-insensitive-compare %2 %1)]
+                      words)]
+    (doseq [w sorted-words] (println w))))
 ```
 #### Output
 
@@ -1649,15 +1559,12 @@ public void Linq39()
 ```clojure
 //clojure
 (defn linq39 []
-  (def digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"])
-
-  (def sorted-digits (->> digits
-                          (filter #(= (get % 1) \i))
-                          reverse))
-
-  (println "A backwards list of the digits with a second character of 'i':")
-  (doall (map println sorted-digits))
-)
+  (let [digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
+        sorted-digits (->> digits
+                           (filter #(= (get % 1) \i))
+                           reverse)]
+    (println "A backwards list of the digits with a second character of 'i':")
+    (doseq [d sorted-digits] (println d))))
 ```
 #### Output
 
@@ -1725,14 +1632,12 @@ public void Linq40()
 ```clojure
 //clojure
 (defn linq40 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def number-groups (map #(hash-map :remainder (% 0), :numbers (% 1))
-                          (group-by #(mod % 5) numbers)))
-
-  (doseq [g number-groups]
-    (println "Numbers with a remainder of" (:remainder g) "when divided by 5:")
-    (doall (map println (:numbers g))))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        number-groups (for [g (group-by #(mod % 5) numbers)] 
+                        {:remainder (g 0), :numbers (g 1)})]
+    (doseq [g number-groups]
+      (println "Numbers with a remainder of" (:remainder g) "when divided by 5:")
+      (doall (map println (:numbers g))))))
 ```
 #### Output
 
@@ -1777,14 +1682,12 @@ public void Linq41()
 ```clojure
 //clojure
 (defn linq41 []
-  (def words ["blueberry" "chimpanzee" "abacus" "banana" "apple" "cheese"])
-  (def word-groups (map #(hash-map :first-letter (% 0), :words (% 1))
-                          (group-by #(get % 0) words)))
-
-  (doseq [g word-groups]
-    (println "Words that start with the letter: " (:first-letter g))
-    (doall (map println (:words g))))
-)
+  (let [words ["blueberry" "chimpanzee" "abacus" "banana" "apple" "cheese"]
+        word-groups (for [g (group-by #(get % 0) words)] 
+                      {:first-letter (g 0), :words (g 1)})]
+    (doseq [g word-groups]
+      (println "Words that start with the letter: " (:first-letter g))
+      (doall (map println (:words g))))))
 ```
 
 #### Output
@@ -1817,12 +1720,10 @@ public void Linq42()
 ```clojure
 //clojure
 (defn linq42 []
-  (def products products-list)
-  (def order-groups (map #(hash-map :category (% 0), :products (% 1))
-                          (group-by #(:category %) products)))
-
-  (doall (map println order-groups))
-)
+  (let [products products-list
+        order-groups (for [g (group-by #(:category %) products)] 
+                       {:category (g 0), :products (g 1)})]
+    (doseq [x order-groups] (println x))))
 ```
 #### Output
 
@@ -1862,23 +1763,17 @@ public void Linq43()
 ```clojure
 //clojure
 (defn linq43 []
-  (def customers customers-list)
-  (def customer-order-groups
-    (map #(hash-map
-           :company-name (:company-name %),
+  (let [customers customers-list
+        customer-order-groups
+        (for [c customers] 
+          {:company-name (:company-name c),
            :year-groups
-           (map (fn [yg]
-                  (hash-map :year (get yg 0)
-                            :month-groups
-                            (map (fn [mg] {:month (time/month (get mg 0)), :orders (get mg 1)})
-                                 (group-by (fn [o] (:order-date o)) (get yg 1)))
-                            ))
-                (group-by (fn [o] (:year o)) (:orders %)))
-           )
-     customers))
-
-  (doall (map println customer-order-groups))
-)
+           (for [yg (group-by #(time/year (:order-date %)) (:orders c))]
+             {:year (first yg)
+              :month-groups
+              (for [mg (group-by #(:order-date %) (second yg))]                 
+                {:month (time/month (first mg)), :orders (second mg)})})})]
+    (doseq [x customer-order-groups] (println x))))
 ```
 #### Output
 
@@ -1899,11 +1794,9 @@ public void Linq44()
 ```clojure
 //clojure
 (defn linq44 []
-  (def anagrams ["from   " " salt" " earn " "  last   " " near " " form  "])
-  (def order-groups (group-by #(sort (.toCharArray (.trim %))) anagrams))
-
-  (doall (map #(println (get % 1)) order-groups))
-)
+  (let [anagrams ["from   " " salt" " earn " "  last   " " near " " form  "]
+        order-groups (group-by #(sort (.toCharArray (.trim %))) anagrams)]
+    (doseq [x order-groups] (println (second x)))))
 ```
 
 #### Output
@@ -1931,11 +1824,9 @@ public void Linq45()
 ```clojure
 //clojure
 (defn linq45 []
-  (def anagrams ["from   " " salt" " earn " "  last   " " near " " form  "])
-  (def order-groups (group-by #(sort (.toCharArray (.trim %))) (map #(.toUpperCase %) anagrams)))
-
-  (doall (map #(println (get % 1)) order-groups))
-)
+  (let [anagrams ["from   " " salt" " earn " "  last   " " near " " form  "]
+        order-groups (group-by #(sort (.toCharArray (.trim %))) (map #(.toUpperCase %) anagrams))]
+    (doseq [x order-groups] (println (second x)))))
 ```
 #### Output
 
@@ -1966,12 +1857,10 @@ public void Linq46()
 ```clojure
 //clojure
 (defn linq46 []
-  (def factors-of-300 [2, 2, 3, 5, 5])
-  (def unique-factors (distinct factors-of-300))
-
-  (println "Prime factors of 300:")
-  (doall (map println unique-factors))
-)
+  (let [factors-of-300 [2, 2, 3, 5, 5]
+        unique-factors (distinct factors-of-300)]
+    (println "Prime factors of 300:")
+    (doseq [n unique-factors] (println n))))
 ```
 #### Output
 
@@ -2002,14 +1891,12 @@ public void Linq47()
 ```clojure
 //clojure
 (defn linq47 []
-  (def products products-list)
-  (def category-names (->> products
-                           (map :category)
-                           distinct))
-
-  (println "Category names:")
-  (doall (map println category-names))
-)
+  (let [products products-list
+        category-names (->> products
+                            (map :category)
+                            distinct)]
+    (println "Category names:")
+    (doseq [c category-names] (println c))))
 ```
 #### Output
 
@@ -2043,14 +1930,11 @@ public void Linq48()
 ```clojure
 //clojure
 (defn linq48 []
-  (def numbers-a [0 2 4 5 6 8 9])
-  (def numbers-b [1 3 5 7 8])
-
-  (def unique-numbers (union (set numbers-a) (set numbers-b)))
-
-  (println "Unique numbers from both arrays:")
-  (doall (map println unique-numbers))
-)
+  (let [numbers-a [0 2 4 5 6 8 9]
+        numbers-b [1 3 5 7 8]
+        unique-numbers (union (set numbers-a) (set numbers-b))]
+    (println "Unique numbers from both arrays:")
+    (doseq [n unique-numbers] (println n))))
 ```
 #### Output
 
@@ -2093,17 +1977,14 @@ public void Linq49()
 ```clojure
 //clojure
 (defn linq49 []
-  (def products products-list)
-  (def customers customers-list)
-
-  (def product-first-chars (map #(get (:product-name %) 0) products))
-  (def customer-first-chars (map #(get (:company-name %) 0) customers))
-
-  (def unique-first-chars (union (set product-first-chars) (set customer-first-chars)))
-
-  (println "Unique first letters from Product names and Customer names:")
-  (doall (map println unique-first-chars))
-)```
+  (let [products products-list
+        customers customers-list
+        product-first-chars (map #(get (:product-name %) 0) products)
+        customer-first-chars (map #(get (:company-name %) 0) customers)
+        unique-first-chars (union (set product-first-chars) (set customer-first-chars))]
+    (println "Unique first letters from Product names and Customer names:")
+    (doseq [x unique-first-chars] (println x))))
+```
 #### Output
 
     Unique first letters from Product names and Customer names:
@@ -2152,14 +2033,11 @@ public void Linq50()
 ```clojure
 //clojure
 (defn linq50 []
-  (def numbers-a [0 2 4 5 6 8 9])
-  (def numbers-b [1 3 5 7 8])
-
-  (def common-numbers (intersection (set numbers-a) (set numbers-b)))
-
-  (println "Common numbers shared by both arrays:")
-  (doall (map println common-numbers))
-)
+  (let [numbers-a [0 2 4 5 6 8 9]
+        numbers-b [1 3 5 7 8]
+        common-numbers (intersection (set numbers-a) (set numbers-b))]
+    (println "Common numbers shared by both arrays:")
+    (doseq [n common-numbers] (println n))))
 ```
 #### Output
 
@@ -2194,17 +2072,13 @@ public void Linq51()
 ```clojure
 //clojure
 (defn linq51 []
-  (def products products-list)
-  (def customers customers-list)
-
-  (def product-first-chars (map #(get (:product-name %) 0) products))
-  (def customer-first-chars (map #(get (:company-name %) 0) customers))
-
-  (def common-first-chars (intersection (set product-first-chars) (set customer-first-chars)))
-
-  (println "Common first letters from Product names and Customer names:")
-  (doall (map println common-first-chars))
-)
+  (let [products products-list
+        customers customers-list
+        product-first-chars (map #(get (:product-name %) 0) products)
+        customer-first-chars (map #(get (:company-name %) 0) customers)
+        common-first-chars (intersection (set product-first-chars) (set customer-first-chars))]
+    (println "Common first letters from Product names and Customer names:")
+    (doseq [x common-first-chars] (println x))))
 ```
 #### Output
 
@@ -2249,14 +2123,11 @@ public void Linq52()
 ```clojure
 //clojure
 (defn linq52 []
-  (def numbers-a [0 2 4 5 6 8 9])
-  (def numbers-b [1 3 5 7 8])
-
-  (def a-only-numbers (difference (set numbers-a) (set numbers-b)))
-
+  (let [numbers-a [0 2 4 5 6 8 9]
+        numbers-b [1 3 5 7 8]
+        a-only-numbers (difference (set numbers-a) (set numbers-b))]
   (println "Numbers in first array but not second array:")
-  (doall (map println a-only-numbers))
-)
+  (doseq [n a-only-numbers] (println n))))
 ```
 #### Output
 
@@ -2294,17 +2165,13 @@ public void Linq53()
 ```clojure
 //clojure
 (defn linq53 []
-  (def products products-list)
-  (def customers customers-list)
-
-  (def product-first-chars (map #(get (:product-name %) 0) products))
-  (def customer-first-chars (map #(get (:company-name %) 0) customers))
-
-  (def product-only-first-chars (difference (set product-first-chars) (set customer-first-chars)))
-
-  (println "First letters from Product names, but not from Customer names:")
-  (doall (map println product-only-first-chars))
-)
+  (let [products products-list
+        customers customers-list
+        product-first-chars (map #(get (:product-name %) 0) products)
+        customer-first-chars (map #(get (:company-name %) 0) customers)
+        product-only-first-chars (difference (set product-first-chars) (set customer-first-chars))]
+    (println "First letters from Product names, but not from Customer names:")
+    (doseq [x  product-only-first-chars] (println x))))
 ```
 #### Output
 
@@ -2340,12 +2207,10 @@ public void Linq54()
 ```clojure
 //clojure
 (defn linq54 []
-  (def dbls [1.7 2.3 1.9 4.1 2.9])
-  (def sorted-doubles (->> dbls sort reverse))
-
-  (println "Every other double from highest to lowest:")
-  (doall (map println (take-nth 2 sorted-doubles)))
-)
+  (let [dbls [1.7 2.3 1.9 4.1 2.9]
+        sorted-doubles (->> dbls sort reverse)]
+    (println "Every other double from highest to lowest:")
+    (doseq [d (take-nth 2 sorted-doubles)] (println d))))
 ```
 #### Output
 
@@ -2377,14 +2242,12 @@ public void Linq55()
 ```clojure
 //clojure
 (defn linq55 []
-  (def words ["cherry", "apple", "blueberry"])
-  (def sorted-words (->> words
-                         sort
-                         (apply list)))
-
-  (println "The sorted word list:")
-  (doall (map println sorted-words))
-)
+  (let [words ["cherry", "apple", "blueberry"]
+        sorted-words (->> words
+                          sort
+                          (apply list))]
+    (println "The sorted word list:")
+    (doseq [w sorted-words] (println w))))
 ```
 #### Output
 
@@ -2411,15 +2274,13 @@ public void Linq56()
 ```clojure
 //clojure
 (defn linq56 []
-  (def sorted-records [{:name "Alice", :score 50}
-                       {:name "Bob", :score 40}
-                       {:name "Cathy", :score 45}])
-
-  (def sorted-records-dict (->> sorted-records
-                                (map #(hash-map (:name %) (:score %)))
-                                (into {})))
-  (println "Bob's score:" (sorted-records-dict "Bob"))
-)
+  (let [sorted-records [{:name "Alice", :score 50}
+                        {:name "Bob", :score 40}
+                        {:name "Cathy", :score 45}]
+        sorted-records-dict (->> sorted-records
+                                 (map #(hash-map (:name %) (:score %)))
+                                 (into {}))]
+    (println "Bob's score:" (sorted-records-dict "Bob"))))
 ```
 #### Output
 
@@ -2444,13 +2305,10 @@ public void Linq57()
 ```clojure
 //clojure
 (defn linq57 []
-  (def numbers [nil 1.0 "two" 3 "four" 5 "six" 7.0])
-
-  (def dbls (filter #(= (type %) java.lang.Double) numbers))
-
-  (println "Numbers stored as doubles:")
-  (doall (map println dbls))
-)
+  (let [numbers [nil 1.0 "two" 3 "four" 5 "six" 7.0]
+        dbls (filter #(= (type %) java.lang.Double) numbers)]
+    (println "Numbers stored as doubles:")
+    (doseq [d dbls] (println d))))
 ```
 #### Output
 
@@ -2481,14 +2339,11 @@ public void Linq58()
 ```clojure
 //clojure
 (defn linq58 []
-  (def products products-list)
-
-  (def product-12 (->> products
-                      (filter #(= (:product-id %) 12))
-                       first))
-
-  (println product-12)
-)
+  (let [products products-list
+        product-12 (->> products
+                        (filter #(= (:product-id %) 12))
+                        first)]
+    (println product-12)))
 ```
 #### Output
 
@@ -2509,12 +2364,9 @@ public void Linq59()
 ```clojure
 //clojure
 (defn linq59 []
-  (def strings ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"])
-
-  (def starts-with-o (first (filter #(= (get % 0) \o) strings)))
-
-  (println "A string starting with 'o':" starts-with-o)
-)
+  (let [strings ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+        starts-with-o (first (filter #(= (get % 0) \o) strings))]
+    (println "A string starting with 'o':" starts-with-o)))
 ```
 #### Output
 
@@ -2535,12 +2387,9 @@ public void Linq61()
 ```clojure
 //clojure
 (defn linq61 []
-  (def numbers [])
-
-  (def first-num-or-default (get numbers 0 0))
-
-  (println first-num-or-default)
-)
+  (let [numbers []
+        first-num-or-default (get numbers 0 0)]
+    (println first-num-or-default)))
 ```
 #### Output
 
@@ -2561,14 +2410,11 @@ public void Linq62()
 ```clojure
 //clojure
 (defn linq62 []
-  (def products products-list)
-
-  (def product-789 (->> products
-                      (filter #(= (:product-id %) 789))
-                       first))
-
-  (println "Product 789 exists:" (not= product-789 nil))
-)
+  (let [products products-list
+        product-789 (->> products
+                         (filter #(= (:product-id %) 789))
+                         first)]
+    (println "Product 789 exists:" (not= product-789 nil))))
 ```
 #### Output
 
@@ -2593,14 +2439,11 @@ public void Linq64()
 ```clojure
 //clojure
 (defn linq64 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-
-  (def fourth-low-num (->> numbers
-                      (filter #(> % 5))
-                       second))
-
-  (println "Second number > 5:" fourth-low-num)
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        fourth-low-num (->> numbers
+                            (filter #(> % 5))
+                            second)]
+    (println "Second number > 5:" fourth-low-num)))
 ```
 #### Output
 
@@ -2629,14 +2472,10 @@ public void Linq65()
 ```clojure
 //clojure
 (defn linq65 []
-
-  (def numbers (map #(hash-map
-                     :number %,
-                     :odd-even (if (= (mod % 2) 1) "odd" "even"))
-                    (range 100 151)))
-
-  (doall (map #(println "The number" (:number %) "is" (:odd-even %)) numbers))
-)
+  (let [numbers (for [n (range 100 151)] 
+                  {:number n,
+                   :odd-even (if (= (mod n 2) 1) "odd" "even")})]
+    (doseq [n numbers] (println "The number" (:number n) "is" (:odd-even n)))))
 ```
 #### Output
 
@@ -2669,9 +2508,8 @@ public void Linq66()
 ```clojure
 //clojure
 (defn linq66 []
-  (def numbers (repeat 10 7))
-  (doall (map println numbers))
-)
+  (let [numbers (repeat 10 7)]
+    (doseq [n numbers] (println n))))
 ```
 #### Output
 
@@ -2705,12 +2543,9 @@ public void Linq67()
 ```clojure
 //clojure
 (defn linq67 []
-  (def words ["believe" "relief" "receipt" "field"])
-
-  (def i-after-e (some #(.contains % "ie") words))
-
-  (println "There is a word that contains in the list that contains 'ei':" i-after-e)
-)
+  (let [words ["believe" "relief" "receipt" "field"]
+        i-after-e (some #(.contains % "ie") words)]
+    (println "There is a word that contains in the list that contains 'ei':" i-after-e)))
 ```
 #### Output
 
@@ -2734,20 +2569,17 @@ public void Linq69()
 ```clojure
 //clojure
 (defn linq69 []
-  (def products products-list)
-
-  (def product-groups
-    (->> products
-         (group-by :category)
-         (filter #(some (fn [p] (= (:units-in-stock p) 0)) (get % 1)))
-         (map #(hash-map :category (get % 0), :products (get % 1)))))
-
-  (doall (map println product-groups))
-)
+  (let [products products-list
+        product-groups
+        (->> products
+             (group-by :category)
+             (filter #(some (fn [p] (= (:units-in-stock p) 0)) (get % 1)))
+             (map #(identity {:category (first %), :products (second %)})))]
+    (doseq [x product-groups] (println x))))
 ```
 #### Output
 
-    {:products [#clj_linq.data.Product{:product-id 3, :product-name Aniseed Syrup, :category Condiments, :unit-price 10.0, :units-in-stock 13} #clj_linq.data.Product{:product-id 4, :product-name Chef Anton's Cajun Seasoning, :category Condiments, :unit-price 22.0, :units-in-stock 53} #clj_linq.data.Product{:product-id 5, :product-name Chef Anton's Gumbo Mix, :category Condiments, :unit-price 21.35, :units-in-stock 0} #clj_linq.data.Product{:product-id 6, :product-name Grandma's Boysenberry Spread, :category Condiments, :unit-price 25.0, :units-in-stock 120} #clj_linq.data.Product{:product-id 8, :product-name Northwoods Cranberry Sauce, :category Condiments, :unit-price 40.0, :units-in-stock 6} #clj_linq.data.Product{:product-id 15, :product-name Genen Shouyu, :category Condiments, :unit-price 15.5, :units-in-stock 39} #clj_linq.data.Product{:product-id 44, :product-name Gula Malacca, :category Condiments, :unit-price 19.45, :units-in-stock 27} #clj_linq.data.Product{:product-id 61, :product-name Sirop d'érable, :category Condiments, :unit-price 28.5, :units-in-stock 113} #clj_linq.data.Product{:product-id 63, :product-name Vegie-spread, :category Condiments, :unit-price 43.9, :units-in-stock 24} #clj_linq.data.Product{:product-id 65, :product-name Louisiana Fiery Hot Pepper Sauce, :category Condiments, :unit-price 21.05, :units-in-stock 76} #clj_linq.data.Product{:product-id 66, :product-name Louisiana Hot Spiced Okra, :category Condiments, :unit-price 17.0, :units-in-stock 4} #clj_linq.data.Product{:product-id 77, :product-name Original Frankfurter grüne Soße, :category Condiments, :unit-price 13.0, :units-in-stock 32}], :category Condiments}
+    {:category Condiments, :products [#clj_linq.data.Product{:product-id 3, :product-name Aniseed Syrup, :category Condiments, :unit-price 10.0, :units-in-stock 13} #clj_linq.data.Product{:product-id 4, :product-name Chef Anton's Cajun Seasoning, :category Condiments, :unit-price 22.0, :units-in-stock 53} #clj_linq.data.Product{:product-id 5, :product-name Chef Anton's Gumbo Mix, :category Condiments, :unit-price 21.35, :units-in-stock 0} #clj_linq.data.Product{:product-id 6, :product-name Grandma's Boysenberry Spread, :category Condiments, :unit-price 25.0, :units-in-stock 120} #clj_linq.data.Product{:product-id 8, :product-name Northwoods Cranberry Sauce, :category Condiments, :unit-price 40.0, :units-in-stock 6} #clj_linq.data.Product{:product-id 15, :product-name Genen Shouyu, :category Condiments, :unit-price 15.5, :units-in-stock 39} #clj_linq.data.Product{:product-id 44, :product-name Gula Malacca, :category Condiments, :unit-price 19.45, :units-in-stock 27} #clj_linq.data.Product{:product-id 61, :product-name Sirop d'érable, :category Condiments, :unit-price 28.5, :units-in-stock 113} #clj_linq.data.Product{:product-id 63, :product-name Vegie-spread, :category Condiments, :unit-price 43.9, :units-in-stock 24} #clj_linq.data.Product{:product-id 65, :product-name Louisiana Fiery Hot Pepper Sauce, :category Condiments, :unit-price 21.05, :units-in-stock 76} #clj_linq.data.Product{:product-id 66, :product-name Louisiana Hot Spiced Okra, :category Condiments, :unit-price 17.0, :units-in-stock 4} #clj_linq.data.Product{:product-id 77, :product-name Original Frankfurter grüne Soße, :category Condiments, :unit-price 13.0, :units-in-stock 32}]}
     ...
 
 ### linq70: All - Simple
@@ -2765,12 +2597,9 @@ public void Linq70()
 ```clojure
 //clojure
 (defn linq70 []
-  (def numbers [1 11 3 19 41 65 19])
-
-  (def only-odd (every? #(= (mod % 2) 1) numbers))
-
-  (println "The list contains only odd numbers:" only-odd)
-)
+  (let [numbers [1 11 3 19 41 65 19]
+        only-odd (every? #(= (mod % 2) 1) numbers)]
+    (println "The list contains only odd numbers:" only-odd)))
 ```
 #### Output
 
@@ -2795,21 +2624,17 @@ public void Linq72()
 ```clojure
 //clojure
 (defn linq72 []
-  (def products products-list)
-
-  (def product-groups
-    (->> products
-         (group-by :category)
-         (filter #(every? (fn [p] (> (:units-in-stock p) 0)) (get % 1)))
-         (map #(hash-map :category (get % 0), :products (get % 1)))
-         ))
-
-  (doall (map println product-groups))
-)
+  (let [products products-list
+        product-groups
+        (->> products
+             (group-by :category)
+             (filter #(every? (fn [p] (> (:units-in-stock p) 0)) (second %)))
+             (map #(identity {:category (first %), :products (second %)})))]
+    (doseq [x product-groups] (println x))))
 ```
 #### Output
 
-    {:products [#clj_linq.data.Product{:product-id 1, :product-name Chai, :category Beverages, :unit-price 18.0, :units-in-stock 39} #clj_linq.data.Product{:product-id 2, :product-name Chang, :category Beverages, :unit-price 19.0, :units-in-stock 17} #clj_linq.data.Product{:product-id 24, :product-name Guaraná Fantástica, :category Beverages, :unit-price 4.5, :units-in-stock 20} #clj_linq.data.Product{:product-id 34, :product-name Sasquatch Ale, :category Beverages, :unit-price 14.0, :units-in-stock 111} #clj_linq.data.Product{:product-id 35, :product-name Steeleye Stout, :category Beverages, :unit-price 18.0, :units-in-stock 20} #clj_linq.data.Product{:product-id 38, :product-name Côte de Blaye, :category Beverages, :unit-price 263.5, :units-in-stock 17} #clj_linq.data.Product{:product-id 39, :product-name Chartreuse verte, :category Beverages, :unit-price 18.0, :units-in-stock 69} #clj_linq.data.Product{:product-id 43, :product-name Ipoh Coffee, :category Beverages, :unit-price 46.0, :units-in-stock 17} #clj_linq.data.Product{:product-id 67, :product-name Laughing Lumberjack Lager, :category Beverages, :unit-price 14.0, :units-in-stock 52} #clj_linq.data.Product{:product-id 70, :product-name Outback Lager, :category Beverages, :unit-price 15.0, :units-in-stock 15} #clj_linq.data.Product{:product-id 75, :product-name Rhönbräu Klosterbier, :category Beverages, :unit-price 7.75, :units-in-stock 125} #clj_linq.data.Product{:product-id 76, :product-name Lakkalikööri, :category Beverages, :unit-price 18.0, :units-in-stock 57}], :category Beverages}
+    {:category Beverages, :products [#clj_linq.data.Product{:product-id 1, :product-name Chai, :category Beverages, :unit-price 18.0, :units-in-stock 39} #clj_linq.data.Product{:product-id 2, :product-name Chang, :category Beverages, :unit-price 19.0, :units-in-stock 17} #clj_linq.data.Product{:product-id 24, :product-name Guaraná Fantástica, :category Beverages, :unit-price 4.5, :units-in-stock 20} #clj_linq.data.Product{:product-id 34, :product-name Sasquatch Ale, :category Beverages, :unit-price 14.0, :units-in-stock 111} #clj_linq.data.Product{:product-id 35, :product-name Steeleye Stout, :category Beverages, :unit-price 18.0, :units-in-stock 20} #clj_linq.data.Product{:product-id 38, :product-name Côte de Blaye, :category Beverages, :unit-price 263.5, :units-in-stock 17} #clj_linq.data.Product{:product-id 39, :product-name Chartreuse verte, :category Beverages, :unit-price 18.0, :units-in-stock 69} #clj_linq.data.Product{:product-id 43, :product-name Ipoh Coffee, :category Beverages, :unit-price 46.0, :units-in-stock 17} #clj_linq.data.Product{:product-id 67, :product-name Laughing Lumberjack Lager, :category Beverages, :unit-price 14.0, :units-in-stock 52} #clj_linq.data.Product{:product-id 70, :product-name Outback Lager, :category Beverages, :unit-price 15.0, :units-in-stock 15} #clj_linq.data.Product{:product-id 75, :product-name Rhönbräu Klosterbier, :category Beverages, :unit-price 7.75, :units-in-stock 125} #clj_linq.data.Product{:product-id 76, :product-name Lakkalikööri, :category Beverages, :unit-price 18.0, :units-in-stock 57}]}
     ...
 
 
@@ -2836,12 +2661,9 @@ public void Linq73()
 ```clojure
 //clojure
 (defn linq73 []
-  (def factors-of-300 [2 2 3 5 5])
-
-  (def unique-factors (count (distinct factors-of-300)))
-
-  (println "There are" unique-factors "unique factors of 300.")
-)
+  (let [factors-of-300 [2 2 3 5 5]
+        unique-factors (count (distinct factors-of-300))]    
+    (println "There are" unique-factors "unique factors of 300.")))
 ```
 #### Output
 
@@ -2862,12 +2684,9 @@ public void Linq74()
 ```clojure
 //clojure
 (defn linq74 []
-  (def numbers [4 5 1 3 9 0 6 7 2 0])
-
-  (def odd-numbers (count (filter #(= 1 (mod % 2)) numbers)))
-
-  (println "There are" odd-numbers "odd numbers in the list.")
-)
+  (let [numbers [4 5 1 3 9 0 6 7 2 0]
+        odd-numbers (count (for [n numbers :when (= 1 (mod n 2))] n))]
+    (println "There are" odd-numbers "odd numbers in the list.")))
 ```
 #### Output
 
@@ -2890,14 +2709,11 @@ public void Linq76()
 ```clojure
 //clojure
 (defn linq76 []
-  (def customers customers-list)
-
-  (def order-counts (map #(hash-map :customer-id (:customer-id %)
-                                    :order-count (count (:orders %)))
-                         customers))
-
-  (doall (map println order-counts))
-)
+  (let [customers customers-list
+        order-counts 
+        (for [c customers]
+          {:customer-id (:customer-id c) :order-count (count (:orders c))})]
+  (doseq [x order-counts] (println x))))
 ```
 #### Output
 
@@ -2928,28 +2744,24 @@ public void Linq77()
 ```clojure
 //clojure
 (defn linq77 []
-
-  (def products products-list)
-
-  (def category-counts
-    (->> products
-         (group-by :category)
-         (map #(hash-map :category (get % 0),
-                         :product-count (count (get % 1))))))
-
-  (doall (map println category-counts))
-)
+  (let [products products-list
+        category-counts
+        (->> products
+             (group-by :category)
+             (map #(identity {:category (first %),
+                              :product-count (count (second %))})))]
+    (doseq [x category-counts] (println x))))
 ```
 #### Output
 
-    {:product-count 12, :category Beverages}
-    {:product-count 12, :category Condiments}
-    {:product-count 5, :category Produce}
-    {:product-count 6, :category Meat/Poultry}
-    {:product-count 12, :category Seafood}
-    {:product-count 10, :category Dairy Products}
-    {:product-count 13, :category Confections}
-    {:product-count 7, :category Grains/Cereals}
+    {:category Beverages, :product-count 12}
+    {:category Condiments, :product-count 12}
+    {:category Produce, :product-count 5}
+    {:category Meat/Poultry, :product-count 6}
+    {:category Seafood, :product-count 12}
+    {:category Dairy Products, :product-count 10}
+    {:category Confections, :product-count 13}
+    {:category Grains/Cereals, :product-count 7}
 
 ### linq78: Sum - Simple
 ```csharp
@@ -2966,12 +2778,9 @@ public void Linq78()
 ```clojure
 //clojure
 (defn linq78 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-
-  (def num-sum (reduce + numbers))
-
-  (println "The sum of the numbers is " num-sum)
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        num-sum (reduce + numbers)]
+    (println "The sum of the numbers is " num-sum)))
 ```
 #### Output
 
@@ -2992,12 +2801,9 @@ public void Linq79()
 ```clojure
 //clojure
 (defn linq79 []
-  (def words ["cherry", "apple", "blueberry"])
-
-  (def total-chars (reduce + (map count words)))
-
-  (println "There are a total of" total-chars "characters in these words.")
-)
+  (let [words ["cherry", "apple", "blueberry"]
+        total-chars (reduce + (map count words))]
+    (println "There are a total of" total-chars "characters in these words.")))
 ```
 #### Output
 
@@ -3021,27 +2827,25 @@ public void Linq80()
 ```clojure
 //clojure
 (defn linq80 []
-  (def products products-list)
-
-  (def categories
-    (->> products
-         (group-by :category)
-         (map #(hash-map :category (get % 0),
-                         :total-units-in-stock (reduce + (map :units-in-stock (get % 1)))))))
-
-  (doall (map println categories))
-)
+  (let [products products-list
+        categories
+        (->> products
+             (group-by :category)
+             (map #(identity 
+                    {:category (get % 0),
+                     :total-units-in-stock (reduce + (map :units-in-stock (get % 1)))})))]
+    (doseq [x categories] (println x))))
 ```
 #### Output
 
-    {:total-units-in-stock 559, :category Beverages}
-    {:total-units-in-stock 507, :category Condiments}
-    {:total-units-in-stock 100, :category Produce}
-    {:total-units-in-stock 165, :category Meat/Poultry}
-    {:total-units-in-stock 701, :category Seafood}
-    {:total-units-in-stock 393, :category Dairy Products}
-    {:total-units-in-stock 386, :category Confections}
-    {:total-units-in-stock 308, :category Grains/Cereals}
+    {:category Beverages, :total-units-in-stock 559}
+    {:category Condiments, :total-units-in-stock 507}
+    {:category Produce, :total-units-in-stock 100}
+    {:category Meat/Poultry, :total-units-in-stock 165}
+    {:category Seafood, :total-units-in-stock 701}
+    {:category Dairy Products, :total-units-in-stock 393}
+    {:category Confections, :total-units-in-stock 386}
+    {:category Grains/Cereals, :total-units-in-stock 308}
 
 ### linq81: Min - Simple
 ```csharp
@@ -3058,12 +2862,9 @@ public void Linq81()
 ```clojure
 //clojure
 (defn linq81 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-
-  (def min-num (apply min numbers))
-
-  (println "The minimum number is" min-num)
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        min-num (apply min numbers)]
+    (println "The minimum number is" min-num)))
 ```
 #### Output
 
@@ -3084,12 +2885,9 @@ public void Linq82()
 ```clojure
 //clojure
 (defn linq82 []
-  (def words ["cherry", "apple", "blueberry"])
-
-  (def shortest-word (apply min (map count words)))
-
-  (println "The shortest word is" shortest-word "characters long.")
-)
+  (let [words ["cherry", "apple", "blueberry"]
+        shortest-word (apply min (map count words))]
+    (println "The shortest word is" shortest-word "characters long.")))
 ```
 #### Output
 
@@ -3113,27 +2911,24 @@ public void Linq83()
 ```clojure
 //clojure
 (defn linq83 []
-  (def products products-list)
-
-  (def categories
-    (->> products
-         (group-by :category)
-         (map #(hash-map :category (get % 0),
-                         :cheapest-price (apply min (map :unit-price (get % 1)))))))
-
-  (doall (map println categories))
-)
+  (let [products products-list
+        categories
+        (->> products
+             (group-by :category)
+             (map #(identity {:category (first %),
+                             :cheapest-price (apply min (map :unit-price (second %)))})))]
+    (doseq [c categories] (println c))))
 ```
 #### Output
 
-    {:cheapest-price 4.5, :category Beverages}
-    {:cheapest-price 10.0, :category Condiments}
-    {:cheapest-price 10.0, :category Produce}
-    {:cheapest-price 7.45, :category Meat/Poultry}
-    {:cheapest-price 6.0, :category Seafood}
-    {:cheapest-price 2.5, :category Dairy Products}
-    {:cheapest-price 9.2, :category Confections}
-    {:cheapest-price 7.0, :category Grains/Cereals}
+    {:category Beverages, :cheapest-price 4.5}
+    {:category Condiments, :cheapest-price 10.0}
+    {:category Produce, :cheapest-price 10.0}
+    {:category Meat/Poultry, :cheapest-price 7.45}
+    {:category Seafood, :cheapest-price 6.0}
+    {:category Dairy Products, :cheapest-price 2.5}
+    {:category Confections, :cheapest-price 9.2}
+    {:category Grains/Cereals, :cheapest-price 7.0}
 
 ### linq84: Min - Elements
 ```csharp
@@ -3154,35 +2949,26 @@ public void Linq84()
 ```clojure
 //clojure
 (defn linq84 []
-  (def products products-list)
-
-  (def categories
-    (->> products
+  (let [products products-list
+        categories (->> products
          (group-by :category)
          (map (fn [g]
-           (let [min-price (apply min (map :unit-price (get g 1)))]
-             (hash-map
-              :category (get g 0)
-              :cheapest-products
-              (filter #(= (:unit-price %) min-price)
-                      (get g 1))
-              )
-             )))
-         ))
-
-  (doall (map println categories))
-)
+           (let [min-price (apply min (map :unit-price (second g)))]
+             {:category (first g)
+              :cheapest-products (for [p (second g) :when (= (:unit-price p) min-price)] p)
+              }))))]
+    (doseq [c categories] (println c))))
 ```
 #### Output
 
-    {:cheapest-products (#clj_linq.data.Product{:product-id 24, :product-name Guaraná Fantástica, :category Beverages, :unit-price 4.5, :units-in-stock 20}), :category Beverages}
-    {:cheapest-products (#clj_linq.data.Product{:product-id 3, :product-name Aniseed Syrup, :category Condiments, :unit-price 10.0, :units-in-stock 13}), :category Condiments}
-    {:cheapest-products (#clj_linq.data.Product{:product-id 74, :product-name Longlife Tofu, :category Produce, :unit-price 10.0, :units-in-stock 4}), :category Produce}
-    {:cheapest-products (#clj_linq.data.Product{:product-id 54, :product-name Tourtière, :category Meat/Poultry, :unit-price 7.45, :units-in-stock 21}), :category Meat/Poultry}
-    {:cheapest-products (#clj_linq.data.Product{:product-id 13, :product-name Konbu, :category Seafood, :unit-price 6.0, :units-in-stock 24}), :category Seafood}
-    {:cheapest-products (#clj_linq.data.Product{:product-id 33, :product-name Geitost, :category Dairy Products, :unit-price 2.5, :units-in-stock 112}), :category Dairy Products}
-    {:cheapest-products (#clj_linq.data.Product{:product-id 19, :product-name Teatime Chocolate Biscuits, :category Confections, :unit-price 9.2, :units-in-stock 25}), :category Confections}
-    {:cheapest-products (#clj_linq.data.Product{:product-id 52, :product-name Filo Mix, :category Grains/Cereals, :unit-price 7.0, :units-in-stock 38}), :category Grains/Cereals}
+    {:category Beverages, :cheapest-products (#clj_linq.data.Product{:product-id 24, :product-name Guaraná Fantástica, :category Beverages, :unit-price 4.5, :units-in-stock 20})}
+    {:category Condiments, :cheapest-products (#clj_linq.data.Product{:product-id 3, :product-name Aniseed Syrup, :category Condiments, :unit-price 10.0, :units-in-stock 13})}
+    {:category Produce, :cheapest-products (#clj_linq.data.Product{:product-id 74, :product-name Longlife Tofu, :category Produce, :unit-price 10.0, :units-in-stock 4})}
+    {:category Meat/Poultry, :cheapest-products (#clj_linq.data.Product{:product-id 54, :product-name Tourtière, :category Meat/Poultry, :unit-price 7.45, :units-in-stock 21})}
+    {:category Seafood, :cheapest-products (#clj_linq.data.Product{:product-id 13, :product-name Konbu, :category Seafood, :unit-price 6.0, :units-in-stock 24})}
+    {:category Dairy Products, :cheapest-products (#clj_linq.data.Product{:product-id 33, :product-name Geitost, :category Dairy Products, :unit-price 2.5, :units-in-stock 112})}
+    {:category Confections, :cheapest-products (#clj_linq.data.Product{:product-id 19, :product-name Teatime Chocolate Biscuits, :category Confections, :unit-price 9.2, :units-in-stock 25})}
+    {:category Grains/Cereals, :cheapest-products (#clj_linq.data.Product{:product-id 52, :product-name Filo Mix, :category Grains/Cereals, :unit-price 7.0, :units-in-stock 38})}
 
 ### linq85: Max - Simple
 ```csharp
@@ -3199,12 +2985,9 @@ public void Linq85()
 ```clojure
 //clojure
 (defn linq85 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-
-  (def max-num (apply max numbers))
-
-  (println "The maximum number is" max-num)
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        max-num (apply max numbers)]
+    (println "The maximum number is" max-num)))
 ```
 #### Output
 
@@ -3225,12 +3008,9 @@ public void Linq86()
 ```clojure
 //clojure
 (defn linq86 []
-  (def words ["cherry", "apple", "blueberry"])
-
-  (def longest-word (apply max (map count words)))
-
-  (println "The longest word is" longest-word "characters long.")
-)
+  (let [words ["cherry", "apple", "blueberry"]
+        longest-word (apply max (map count words))]
+    (println "The longest word is" longest-word "characters long.")))
 ```
 #### Output
 
@@ -3254,27 +3034,25 @@ public void Linq87()
 ```clojure
 //clojure
 (defn linq87 []
-  (def products products-list)
-
-  (def categories
-    (->> products
-         (group-by :category)
-         (map #(hash-map :category (get % 0),
-                         :most-expensive-price (apply max (map :unit-price (get % 1)))))))
-
-  (doall (map println categories))
-)
+  (let [products products-list
+        categories
+        (->> products
+             (group-by :category)
+             (map #(identity 
+                   {:category (get % 0),
+                    :most-expensive-price (apply max (map :unit-price (get % 1)))})))]
+    (doseq [c categories] (println c))))
 ```
 #### Output
 
-    {:most-expensive-price 263.5, :category Beverages}
-    {:most-expensive-price 43.9, :category Condiments}
-    {:most-expensive-price 53.0, :category Produce}
-    {:most-expensive-price 123.79, :category Meat/Poultry}
-    {:most-expensive-price 62.5, :category Seafood}
-    {:most-expensive-price 55.0, :category Dairy Products}
-    {:most-expensive-price 81.0, :category Confections}
-    {:most-expensive-price 38.0, :category Grains/Cereals}
+    {:category Beverages, :most-expensive-price 263.5}
+    {:category Condiments, :most-expensive-price 43.9}
+    {:category Produce, :most-expensive-price 53.0}
+    {:category Meat/Poultry, :most-expensive-price 123.79}
+    {:category Seafood, :most-expensive-price 62.5}
+    {:category Dairy Products, :most-expensive-price 55.0}
+    {:category Confections, :most-expensive-price 81.0}
+    {:category Grains/Cereals, :most-expensive-price 38.0}
 
 ### linq88: Max - Elements
 ```csharp
@@ -3295,35 +3073,27 @@ public void Linq88()
 ```clojure
 //clojure
 (defn linq88 []
-  (def products products-list)
-
-  (def categories
-    (->> products
-         (group-by :category)
-         (map (fn [g]
-           (let [max-price (apply max (map :unit-price (get g 1)))]
-             (hash-map
-              :category (get g 0)
-              :most-expensive-products
-              (filter #(= (:unit-price %) max-price)
-                      (get g 1))
-              )
-             )))
-         ))
-
-  (doall (map println categories))
-)
+  (let [products products-list
+        categories
+        (->> products
+             (group-by :category)
+             (map (fn [g]
+                    (let [max-price (apply max (map :unit-price (second g)))]
+                      {:category (first g)
+                       :most-expensive-products
+                       (for [p (second g) :when (= (:unit-price p) max-price)] p)}))))]
+    (doseq [c categories] (println c))))
 ```
 #### Output
 
-    {:most-expensive-products (#clj_linq.data.Product{:product-id 38, :product-name Côte de Blaye, :category Beverages, :unit-price 263.5, :units-in-stock 17}), :category Beverages}
-    {:most-expensive-products (#clj_linq.data.Product{:product-id 63, :product-name Vegie-spread, :category Condiments, :unit-price 43.9, :units-in-stock 24}), :category Condiments}
-    {:most-expensive-products (#clj_linq.data.Product{:product-id 51, :product-name Manjimup Dried Apples, :category Produce, :unit-price 53.0, :units-in-stock 20}), :category Produce}
-    {:most-expensive-products (#clj_linq.data.Product{:product-id 29, :product-name Thüringer Rostbratwurst, :category Meat/Poultry, :unit-price 123.79, :units-in-stock 0}), :category Meat/Poultry}
-    {:most-expensive-products (#clj_linq.data.Product{:product-id 18, :product-name Carnarvon Tigers, :category Seafood, :unit-price 62.5, :units-in-stock 42}), :category Seafood}
-    {:most-expensive-products (#clj_linq.data.Product{:product-id 59, :product-name Raclette Courdavault, :category Dairy Products, :unit-price 55.0, :units-in-stock 79}), :category Dairy Products}
-    {:most-expensive-products (#clj_linq.data.Product{:product-id 20, :product-name Sir Rodney's Marmalade, :category Confections, :unit-price 81.0, :units-in-stock 40}), :category Confections}
-    {:most-expensive-products (#clj_linq.data.Product{:product-id 56, :product-name Gnocchi di nonna Alice, :category Grains/Cereals, :unit-price 38.0, :units-in-stock 21}), :category Grains/Cereals}
+    {:category Beverages, :most-expensive-products (#clj_linq.data.Product{:product-id 38, :product-name Côte de Blaye, :category Beverages, :unit-price 263.5, :units-in-stock 17})}
+    {:category Condiments, :most-expensive-products (#clj_linq.data.Product{:product-id 63, :product-name Vegie-spread, :category Condiments, :unit-price 43.9, :units-in-stock 24})}
+    {:category Produce, :most-expensive-products (#clj_linq.data.Product{:product-id 51, :product-name Manjimup Dried Apples, :category Produce, :unit-price 53.0, :units-in-stock 20})}
+    {:category Meat/Poultry, :most-expensive-products (#clj_linq.data.Product{:product-id 29, :product-name Thüringer Rostbratwurst, :category Meat/Poultry, :unit-price 123.79, :units-in-stock 0})}
+    {:category Seafood, :most-expensive-products (#clj_linq.data.Product{:product-id 18, :product-name Carnarvon Tigers, :category Seafood, :unit-price 62.5, :units-in-stock 42})}
+    {:category Dairy Products, :most-expensive-products (#clj_linq.data.Product{:product-id 59, :product-name Raclette Courdavault, :category Dairy Products, :unit-price 55.0, :units-in-stock 79})}
+    {:category Confections, :most-expensive-products (#clj_linq.data.Product{:product-id 20, :product-name Sir Rodney's Marmalade, :category Confections, :unit-price 81.0, :units-in-stock 40})}
+    {:category Grains/Cereals, :most-expensive-products (#clj_linq.data.Product{:product-id 56, :product-name Gnocchi di nonna Alice, :category Grains/Cereals, :unit-price 38.0, :units-in-stock 21})}
 
 ### linq89: Average - Simple
 ```csharp
@@ -3340,12 +3110,9 @@ public void Linq89()
 ```clojure
 //clojure
 (defn linq89 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-
-  (def avg (average numbers))
-
-  (println "The average number is" avg)
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        avg (average numbers)]
+    (println "The average number is" avg)))
 ```
 #### Output
 
@@ -3366,12 +3133,9 @@ public void Linq90()
 ```clojure
 //clojure
 (defn linq90 []
-  (def words ["cherry", "apple", "blueberry"])
-
-  (def average-length (average (map count words)))
-
-  (println "The average word length is" average-length "characters.")
-)
+  (let [words ["cherry", "apple", "blueberry"]
+        average-length (average (map count words))]
+    (println "The average word length is" average-length "characters.")))
 ```
 #### Output
 
@@ -3395,27 +3159,24 @@ public void Linq91()
 ```clojure
 //clojure
 (defn linq91 []
-  (def products products-list)
-
-  (def categories
-    (->> products
-         (group-by :category)
-         (map #(hash-map :category (get % 0),
-                         :average-price (average (map :unit-price (get % 1)))))))
-
-  (doall (map println categories))
-)
+  (let [products products-list
+        categories
+        (->> products
+             (group-by :category)
+             (map #(identity {:category (get % 0),
+                              :average-price (average (map :unit-price (get % 1)))})))]
+    (doseq [c categories] (println c))))
 ```
 #### Output
 
-    {:average-price 37.979166666666664, :category Beverages}
-    {:average-price 23.0625, :category Condiments}
-    {:average-price 32.37, :category Produce}
-    {:average-price 54.00666666666667, :category Meat/Poultry}
-    {:average-price 20.6825, :category Seafood}
-    {:average-price 28.73, :category Dairy Products}
-    {:average-price 25.16, :category Confections}
-    {:average-price 20.25, :category Grains/Cereals}
+    {:category Beverages, :average-price 37.979166666666664}
+    {:category Condiments, :average-price 23.0625}
+    {:category Produce, :average-price 32.37}
+    {:category Meat/Poultry, :average-price 54.00666666666667}
+    {:category Seafood, :average-price 20.6825}
+    {:category Dairy Products, :average-price 28.73}
+    {:category Confections, :average-price 25.16}
+    {:category Grains/Cereals, :average-price 20.25}
 
 ### linq92: Aggregate - Simple
 ```csharp
@@ -3432,12 +3193,9 @@ public void Linq92()
 ```clojure
 //clojure
 (defn linq92 []
-  (def dbls [1.7 2.3 1.9 4.1 2.9])
-
-  (def product (reduce * dbls))
-
-  (println "Total product of all numbers:" product)
-)
+  (let [dbls [1.7 2.3 1.9 4.1 2.9]
+        product (reduce * dbls)]
+    (println "Total product of all numbers:" product)))
 ```
 #### Output
 
@@ -3463,14 +3221,11 @@ public void Linq93()
 ```clojure
 //clojure
 (defn linq93 []
-  (def start-balance 100)
-  (def attempted-withdrawls [20 10 40 50 10 70 30])
-
-  (def end-balance (reduce #(identity (if (<= %2 %1) (- %1 %2) %1))
-                           start-balance attempted-withdrawls))
-
-  (println "Ending balance:" end-balance)
-)
+  (let [start-balance 100
+        attempted-withdrawls [20 10 40 50 10 70 30]
+        end-balance (reduce #(identity (if (<= %2 %1) (- %1 %2) %1))
+                            start-balance attempted-withdrawls)]
+    (println "Ending balance:" end-balance)))
 ```
 #### Output
 
@@ -3500,14 +3255,11 @@ public void Linq94()
 ```clojure
 //clojure
 (defn linq94 []
-  (def numbers-a [0 2 4 5 6 8 9])
-  (def numbers-b [1 3 5 7 8])
-
-  (def all-numbers (flatten [numbers-a numbers-b]))
-
-  (println "All numbers from both arrays:")
-  (doall (map println all-numbers))
-)
+  (let [numbers-a [0 2 4 5 6 8 9]
+        numbers-b [1 3 5 7 8]
+        all-numbers (flatten [numbers-a numbers-b])]
+    (println "All numbers from both arrays:")
+    (doseq [n all-numbers] (println n))))
 ```
 #### Output
 
@@ -3552,17 +3304,13 @@ public void Linq95()
 ```clojure
 //clojure
 (defn linq95 []
-  (def products products-list)
-  (def customers customers-list)
-
-  (def customer-names (map :company-name customers))
-  (def product-names (map :product-name products))
-
-  (def all-names (flatten [customer-names product-names]))
-
-  (println "Customer and product names:")
-  (doall (map println all-names))
-)
+  (let [products products-list
+        customers customers-list
+        customer-names (map :company-name customers)
+        product-names (map :product-name products)
+        all-names (flatten [customer-names product-names])]
+    (println "Customer and product names:")
+    (doseq [x all-names] (println x))))
 ```
 #### Output
 
@@ -3591,13 +3339,10 @@ public void Linq96()
 ```clojure
 //clojure
 (defn linq96 []
-  (def words-a ["cherry" "apple" "blueberry"])
-  (def words-b ["cherry" "apple" "blueberry"])
-
-  (def match (= words-a words-b))
-
-  (println "The sequences match:" match)
-)
+  (let [words-a ["cherry" "apple" "blueberry"]
+        words-b ["cherry" "apple" "blueberry"]
+        match (= words-a words-b)]
+    (println "The sequences match:" match)))
 ```
 #### Output
 
@@ -3619,13 +3364,10 @@ public void Linq97()
 ```clojure
 //clojure
 (defn linq97 []
-  (def words-a ["cherry" "apple" "blueberry"])
-  (def words-b ["apple" "blueberry" "cherry"])
-
-  (def match (= words-a words-b))
-
-  (println "The sequences match:" match)
-)
+  (let [words-a ["cherry" "apple" "blueberry"]
+        words-b ["apple" "blueberry" "cherry"]
+        match (= words-a words-b)]
+    (println "The sequences match:" match)))
 ```
 #### Output
 
@@ -3661,13 +3403,10 @@ public void Linq99()
 ```clojure
 //clojure
 (defn linq99 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-
-  (def i (atom 0))
-  (def q (map (fn [x] (swap! i inc)) (range 10)))
-
-  (println @i (count q) @i)
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        i (atom 0)
+        q (map (fn [x] (swap! i inc)) (range 10))]
+    (println @i (count q) @i)))
 ```
 #### Output
 
@@ -3700,13 +3439,10 @@ public void Linq100()
 ```clojure
 //clojure
 (defn linq100 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-
-  (def i (atom 0))
-  (def q (into [] (map (fn [x] (swap! i inc)) (range 10))))
-
-  (println @i (count q) @i)
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        i (atom 0)
+        q (into [] (map (fn [x] (swap! i inc)) (range 10)))]
+    (println @i (count q) @i)))
 ```
 #### Output
 
@@ -3751,17 +3487,16 @@ public void Linq101()
 //clojure
 (defn linq101 []
   (def ^:dynamic numbers [5 4 1 3 9 8 6 7 2 0])
-
+  
   (defn low-numbers []
     (filter #(<= % 3) numbers))
-
+  
   (println "First run numbers <= 3:")
-  (doall (map println (low-numbers)))
-
+  (doseq [n (low-numbers)] (println n))
+  
   (println "Second run numbers <= 3")
   (binding [numbers (map #(* -1 %) numbers)]
-    (doall (map println (low-numbers))))
-)
+    (doseq [n (low-numbers)] (println n))))
 ```
 #### Output
 
@@ -3824,7 +3559,7 @@ public void Linq102()
 (defn linq102 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (flatten 
+        q (flatten
            (map (fn [pc] (map #(identity {:category (:key pc), :product-name (:product-name %)})
                               (:items pc)))
                 (join categories products #(= %1 (:category %2)))))]
@@ -3874,12 +3609,11 @@ public void Linq103()
 ```
 ```clojure
 //clojure
-(defn linq103[]
+(defn linq103 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (for [pc (join categories products #(= %1 (:category %2)))] 
+        q (for [pc (join categories products #(= %1 (:category %2)))]
             {:category (:key pc), :products (:items pc)})]
-
     (doseq [pc q]
       (println (:category pc))
       (doseq [product (:products pc)]
@@ -3943,13 +3677,13 @@ public void Linq104()
 ```
 ```clojure
 //clojure
-(defn linq104[]
+(defn linq104 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (flatten 
+        q (flatten
            (for [pc (join categories products #(= %1 (:category %2)))]
-             (for [p (:items pc)] 
-               {:category (:key pc), 
+             (for [p (:items pc)]
+               {:category (:key pc),
                 :product-name (:product-name p)})))]
     (doseq [p q]
     (println (:product-name p) ":" (:category p)))))
@@ -4009,7 +3743,7 @@ public void Linq105()
              (if (empty? (:items pc))
                {:category (:key pc), :product-name "(No products)"}
                (for [p (:items pc)]
-                 {:category (:key pc), 
+                 {:category (:key pc),
                   :product-name (:product-name p)}))))]
     (doseq [p q]
       (println (:product-name p) ":" (:category p)))))

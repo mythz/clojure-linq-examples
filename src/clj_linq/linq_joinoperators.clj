@@ -17,19 +17,18 @@
       (println (:product-name v) ":" (:category v)))))
 
 ;; linq103: Group Join
-(defn linq103[]
+(defn linq103 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (for [pc (join categories products #(= %1 (:category %2)))]
             {:category (:key pc), :products (:items pc)})]
-
     (doseq [pc q]
       (println (:category pc))
       (doseq [product (:products pc)]
         (println " " (:product-name product))))))
 
 ;; linq104: Cross Join with Group Join
-(defn linq104[]
+(defn linq104 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
@@ -41,7 +40,7 @@
     (println (:product-name p) ":" (:category p)))))
 
 ;; linq105: Left Outer Join
-(defn linq105[]
+(defn linq105 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
