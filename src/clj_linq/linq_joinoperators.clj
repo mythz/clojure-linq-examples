@@ -2,79 +2,57 @@
   (:require [clj-linq.data :refer :all]))
 
 (defn join [coll with-coll matcher]
-  (map (fn [x]
-         {:key x :items (filter (fn [y] (matcher x y)) with-coll)})
+  (map (fn [x] {:key x :items (filter (fn [y] (matcher x y)) with-coll)})
        coll))
 
 ;; linq102: Cross Join
 (defn linq102 []
-  (def categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"])
-
-  (def products products-list)
-
-  (def q
-    (flatten (map
-     (fn [pc] (map #(identity {:category (:key pc), :product-name (:product-name %)})
-                   (:items pc)))
-     (join categories products #(= %1 (:category %2)))))
-    )
-
-  (doall (map println q))
-)
+  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+        products products-list
+        q (flatten
+           (map (fn [pc] (map #(identity {:category (:key pc), :product-name (:product-name %)})
+                              (:items pc)))
+                (join categories products #(= %1 (:category %2)))))]
+    (doseq [v q]
+      (println (:product-name v) ":" (:category v)))))
 
 ;; linq103: Group Join
 (defn linq103[]
+  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+        products products-list
+        q (for [pc (join categories products #(= %1 (:category %2)))]
+            {:category (:key pc), :products (:items pc)})]
 
-  (def categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"])
-
-  (def products products-list)
-
-  (def q (map #(identity {:category (:key %), :products (:items %)})
-     (join categories products #(= %1 (:category %2)))))
-
-  (doseq [pc q]
-    (println (:category pc))
-    (doseq [product (:products pc)]
-      (println " " (:product-name product))
-    ))
-)
+    (doseq [pc q]
+      (println (:category pc))
+      (doseq [product (:products pc)]
+        (println " " (:product-name product))))))
 
 ;; linq104: Cross Join with Group Join
 (defn linq104[]
-
-  (def categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"])
-
-  (def products products-list)
-
-  (def q
-    (flatten (map
-     (fn [pc] (map #(identity {:category (:key pc), :product-name (:product-name %)})
-                   (:items pc)))
-     (join categories products #(= %1 (:category %2)))))
-    )
-
-  (doseq [p q]
-    (println (:product-name p) ":" (:category p)))
-)
+  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+        products products-list
+        q (flatten
+           (for [pc (join categories products #(= %1 (:category %2)))]
+             (for [p (:items pc)]
+               {:category (:key pc),
+                :product-name (:product-name p)})))]
+    (doseq [p q]
+    (println (:product-name p) ":" (:category p)))))
 
 ;; linq105: Left Outer Join
 (defn linq105[]
+  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+        products products-list
+        q (flatten
+           (for [pc (join categories products #(= %1 (:category %2)))]
+             (if (empty? (:items pc))
+               {:category (:key pc), :product-name "(No products)"}
+               (for [p (:items pc)]
+                 {:category (:key pc),
+                  :product-name (:product-name p)}))))]
+    (doseq [p q]
+      (println (:product-name p) ":" (:category p)))))
 
-  (def categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"])
-
-  (def products products-list)
-
-  (def q
-    (flatten
-     (map (fn [pc]
-            (if (empty? (:items pc))
-              {:category (:key pc), :product-name "(No products)"}
-              (map #(identity {:category (:key pc), :product-name (:product-name %)})
-                   (:items pc))))
-          (join categories products #(= %1 (:category %2))))))
-
-  (doseq [p q]
-    (println (:product-name p) ":" (:category p)))
-)
 
 (def examples [linq102 linq103 linq105])

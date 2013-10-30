@@ -3777,13 +3777,9 @@ LINQ - Join Operators
 ### Clojure utils added
 
 ```clojure
-join(Iterable seq, Iterable withSeq, bool match(x,y)) =>
-  seq.expand((x) => withSeq
-    .where((y) => match(x,y))
-    .map((y) => [x,y]));
-
-joinGroup(Iterable seq, Iterable withSeq, bool match(x,y)) =>
-  group(join(seq, withSeq, match), by:(j) => j[0]);
+(defn join [coll with-coll matcher]
+  (map (fn [x] {:key x :items (filter (fn [y] (matcher x y)) with-coll)})
+       coll))
 ```
 
 ### linq102: Cross Join
@@ -3813,27 +3809,26 @@ public void Linq102()
 ```
 ```clojure
 //clojure
-linq102(){
-  var categories = [ "Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood" ];
-
-  var products = productsList();
-
-  var q = join(categories, products, (c,p) => c == p.category)
-    .map((j) => { 'Category': j[0], 'ProductName': j[1].productName });
-
-  q.forEach(print);
-}
+(defn linq102 []
+  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+        products products-list
+        q (flatten 
+           (map (fn [pc] (map #(identity {:category (:key pc), :product-name (:product-name %)})
+                              (:items pc)))
+                (join categories products #(= %1 (:category %2)))))]
+    (doseq [v q]
+      (println (:product-name v) ":" (:category v)))))
 ```
 #### Output
 
-    {:category Beverages, :product-name Chai}
-    {:category Beverages, :product-name Chang}
-    {:category Beverages, :product-name Guaraná Fantástica}
-    {:category Beverages, :product-name Sasquatch Ale}
-    {:category Beverages, :product-name Steeleye Stout}
-    {:category Beverages, :product-name Côte de Blaye}
-    {:category Beverages, :product-name Chartreuse verte}
-    {:category Beverages, :product-name Ipoh Coffee}
+    Chai : Beverages
+    Chang : Beverages
+    Guaraná Fantástica : Beverages
+    Sasquatch Ale : Beverages
+    Steeleye Stout : Beverages
+    Côte de Blaye : Beverages
+    Chartreuse verte : Beverages
+    Ipoh Coffee : Beverages
     ...
 
 ### linq103: Group Join
@@ -3867,19 +3862,16 @@ public void Linq103()
 ```
 ```clojure
 //clojure
-linq103(){
-  var categories = [ "Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood" ];
+(defn linq103[]
+  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+        products products-list
+        q (for [pc (join categories products #(= %1 (:category %2)))] 
+            {:category (:key pc), :products (:items pc)})]
 
-  var products = productsList();
-
-  var q = joinGroup(categories, products, (c,p) => c == p.category)
-    .map((j) => { 'Category': j.key, 'Products': j.values.map((g) => g[1]) });
-
-  q.forEach((v){
-    print("${v['Category']}:");
-    v['Products'].forEach((p) => print("   ${p.productName}"));
-  });
-}
+    (doseq [pc q]
+      (println (:category pc))
+      (doseq [product (:products pc)]
+        (println " " (:product-name product))))))
 ```
 #### Output
 
@@ -3939,18 +3931,16 @@ public void Linq104()
 ```
 ```clojure
 //clojure
-linq104(){
-  var categories = [ "Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood" ];
-
-  var products = productsList();
-
-  var q = joinGroup(categories, products, (c,p) => c == p.category)
-    .expand((j) => j.values.map((g) => g[1])
-      .map((p) => { 'Category': j.key, 'ProductName': p.productName }));
-
-  q.forEach((v) =>
-    print("${v['ProductName']}: ${v['Category']}"));
-}
+(defn linq104[]
+  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+        products products-list
+        q (flatten 
+           (for [pc (join categories products #(= %1 (:category %2)))]
+             (for [p (:items pc)] 
+               {:category (:key pc), 
+                :product-name (:product-name p)})))]
+    (doseq [p q]
+    (println (:product-name p) ":" (:category p)))))
 ```
 #### Output
 
@@ -3999,22 +3989,18 @@ public void Linq105()
 ```
 ```clojure
 //clojure
-linq105(){
-  var categories = [ "Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood" ];
-
-  var products = productsList();
-
-  var q = categories
-    .expand((c){
-      var catProducts = products.where((p) => c == p.category);
-      return catProducts.isEmpty
-        ? [{ 'Category': c, 'ProductName': "(No products)" }]
-        : catProducts.map((p) => { 'Category': c, 'ProductName': p.productName });
-    });
-
-  q.forEach((v) =>
-    print("${v['ProductName']}: ${v['Category']}"));
-}
+(defn linq105 []
+  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+        products products-list
+        q (flatten
+           (for [pc (join categories products #(= %1 (:category %2)))]
+             (if (empty? (:items pc))
+               {:category (:key pc), :product-name "(No products)"}
+               (for [p (:items pc)]
+                 {:category (:key pc), 
+                  :product-name (:product-name p)}))))]
+    (doseq [p q]
+      (println (:product-name p) ":" (:category p)))))
 ```
 #### Output
 
