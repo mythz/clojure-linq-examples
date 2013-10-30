@@ -7,7 +7,7 @@ Execute and display the results of all the examples with:
 
     lein run
 
-_Note: Run specific examples by excluding others in [core.clj -main](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/core.clj). You can also compare these LINQ examples in [Dart](https://github.com/dartist/101LinqSamples)_
+_Note: Run specific examples by excluding others in [core.clj -main](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/core.clj). You can also compare these [LINQ examples in Dart](https://github.com/dartist/101LinqSamples)._
 
 #### Contributions into more idiomatic and readable Clojure examples are welcome!
 
