@@ -3560,9 +3560,9 @@ public void Linq102()
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
-           (map (fn [pc] (map #(identity {:category (:key pc), :product-name (:product-name %)})
-                              (:items pc)))
-                (join categories products #(= %1 (:category %2)))))]
+           (for [pc (join-group categories products #(= %1 (:category %2)))]
+             (for [x (:items pc)]
+               {:category (:key pc), :product-name (:product-name x)})))]
     (doseq [v q]
       (println (:product-name v) ":" (:category v)))))
 ```
@@ -3612,7 +3612,7 @@ public void Linq103()
 (defn linq103 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (for [pc (join categories products #(= %1 (:category %2)))]
+        q (for [pc (join-group categories products #(= %1 (:category %2)))]
             {:category (:key pc), :products (:items pc)})]
     (doseq [pc q]
       (println (:category pc))
@@ -3681,7 +3681,7 @@ public void Linq104()
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
-           (for [pc (join categories products #(= %1 (:category %2)))]
+           (for [pc (join-group categories products #(= %1 (:category %2)))]
              (for [p (:items pc)]
                {:category (:key pc),
                 :product-name (:product-name p)})))]
@@ -3739,7 +3739,7 @@ public void Linq105()
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
-           (for [pc (join categories products #(= %1 (:category %2)))]
+           (for [pc (join-group categories products #(= %1 (:category %2)))]
              (if (empty? (:items pc))
                {:category (:key pc), :product-name "(No products)"}
                (for [p (:items pc)]

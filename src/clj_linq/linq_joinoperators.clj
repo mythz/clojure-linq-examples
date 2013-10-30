@@ -1,7 +1,7 @@
 (ns clj-linq.linq-joinoperators
   (:require [clj-linq.data :refer :all]))
 
-(defn join [coll with-coll matcher]
+(defn join-group [coll with-coll matcher]
   (map (fn [x] {:key x :items (filter (fn [y] (matcher x y)) with-coll)})
        coll))
 
@@ -10,9 +10,9 @@
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
-           (map (fn [pc] (map #(identity {:category (:key pc), :product-name (:product-name %)})
-                              (:items pc)))
-                (join categories products #(= %1 (:category %2)))))]
+           (for [pc (join-group categories products #(= %1 (:category %2)))]
+             (for [x (:items pc)]
+               {:category (:key pc), :product-name (:product-name x)})))]
     (doseq [v q]
       (println (:product-name v) ":" (:category v)))))
 
@@ -20,7 +20,7 @@
 (defn linq103 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (for [pc (join categories products #(= %1 (:category %2)))]
+        q (for [pc (join-group categories products #(= %1 (:category %2)))]
             {:category (:key pc), :products (:items pc)})]
     (doseq [pc q]
       (println (:category pc))
@@ -32,7 +32,7 @@
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
-           (for [pc (join categories products #(= %1 (:category %2)))]
+           (for [pc (join-group categories products #(= %1 (:category %2)))]
              (for [p (:items pc)]
                {:category (:key pc),
                 :product-name (:product-name p)})))]
@@ -44,7 +44,7 @@
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
-           (for [pc (join categories products #(= %1 (:category %2)))]
+           (for [pc (join-group categories products #(= %1 (:category %2)))]
              (if (empty? (:items pc))
                {:category (:key pc), :product-name "(No products)"}
                (for [p (:items pc)]
