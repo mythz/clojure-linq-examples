@@ -7,11 +7,9 @@ Execute and display the results of all the examples with:
 
     lein run
 
-_Note: Run specific examples by excluding others in [core.clj -main](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/core.clj)_
+_Note: Run specific examples by excluding others in [core.clj -main](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/core.clj). You can also compare these LINQ examples in [Dart](https://github.com/dartist/101LinqSamples)_
 
-Contributions into more idiomatic and readable Clojure examples are welcome!
-
-_you can also compare these LINQ examples in [Dart](https://github.com/dartist/101LinqSamples)_
+#### Contributions into more idiomatic and readable Clojure examples are welcome!
 
 #### [LINQ - Restriction Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_restrictions.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-09787825)
 #### [LINQ - Projection Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_projections.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Partitioning-Operators-c68aaccc)
@@ -27,7 +25,6 @@ _you can also compare these LINQ examples in [Dart](https://github.com/dartist/1
 #### [LINQ - Miscellaneous Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_miscoperators.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Miscellaneous-6b72bb2a)
 #### [LINQ - Query Execution](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_queryexecution.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
 #### [LINQ - Join Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_joinoperators.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Join-Operators-dabef4e9)
-
 
 ##  Side-by-side - C# LINQ vs Clojure
 
