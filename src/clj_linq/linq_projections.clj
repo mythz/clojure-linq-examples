@@ -17,7 +17,7 @@
   (let [products products-list
         product-names (map #(:product-name %) products)]
     (println "Product Names:")
-    (doseq (map println product-names))))
+    (doseq [x product-names] (println x))))
 
 ;; linq8: Select - Transformation
 (defn linq8 []
