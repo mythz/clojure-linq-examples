@@ -6,69 +6,53 @@
 
 ;; linq40: GroupBy - Simple 1
 (defn linq40 []
-  (def numbers [5 4 1 3 9 8 6 7 2 0])
-  (def number-groups (map #(hash-map :remainder (% 0), :numbers (% 1))
-                          (group-by #(mod % 5) numbers)))
-
-  (doseq [g number-groups]
-    (println "Numbers with a remainder of" (:remainder g) "when divided by 5:")
-    (doall (map println (:numbers g))))
-)
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        number-groups (for [g (group-by #(mod % 5) numbers)]
+                        {:remainder (g 0), :numbers (g 1)})]
+    (doseq [g number-groups]
+      (println "Numbers with a remainder of" (:remainder g) "when divided by 5:")
+      (doall (map println (:numbers g))))))
 
 ;; linq41: GroupBy - Simple 2
 (defn linq41 []
-  (def words ["blueberry" "chimpanzee" "abacus" "banana" "apple" "cheese"])
-  (def word-groups (map #(hash-map :first-letter (% 0), :words (% 1))
-                          (group-by #(get % 0) words)))
-
-  (doseq [g word-groups]
-    (println "Words that start with the letter: " (:first-letter g))
-    (doall (map println (:words g))))
-)
+  (let [words ["blueberry" "chimpanzee" "abacus" "banana" "apple" "cheese"]
+        word-groups (for [g (group-by #(get % 0) words)]
+                      {:first-letter (g 0), :words (g 1)})]
+    (doseq [g word-groups]
+      (println "Words that start with the letter: " (:first-letter g))
+      (doall (map println (:words g))))))
 
 ;; linq42: GroupBy - Simple 3
 (defn linq42 []
-  (def products products-list)
-  (def order-groups (map #(hash-map :category (% 0), :products (% 1))
-                          (group-by #(:category %) products)))
-
-  (doall (map println order-groups))
-)
+  (let [products products-list
+        order-groups (for [g (group-by #(:category %) products)]
+                       {:category (g 0), :products (g 1)})]
+    (doseq [x order-groups] (println x))))
 
 ;; linq43: GroupBy - Nested
 (defn linq43 []
-  (def customers customers-list)
-  (def customer-order-groups
-    (map #(hash-map
-           :company-name (:company-name %),
+  (let [customers customers-list
+        customer-order-groups
+        (for [c customers]
+          {:company-name (:company-name c),
            :year-groups
-           (map (fn [yg]
-                  (hash-map :year (get yg 0)
-                            :month-groups
-                            (map (fn [mg] {:month (time/month (get mg 0)), :orders (get mg 1)})
-                                 (group-by (fn [o] (:order-date o)) (get yg 1)))
-                            ))
-                (group-by (fn [o] (:year o)) (:orders %)))
-           )
-     customers))
-
-  (doall (map println customer-order-groups))
-)
+           (for [yg (group-by #(time/year (:order-date %)) (:orders c))]
+             {:year (first yg)
+              :month-groups
+              (for [mg (group-by #(:order-date %) (second yg))]
+                {:month (time/month (first mg)), :orders (second mg)})})})]
+    (doseq [x customer-order-groups] (println x))))
 
 ;; linq44: GroupBy - Comparer
 (defn linq44 []
-  (def anagrams ["from   " " salt" " earn " "  last   " " near " " form  "])
-  (def order-groups (group-by #(sort (.toCharArray (.trim %))) anagrams))
-
-  (doall (map #(println (get % 1)) order-groups))
-)
+  (let [anagrams ["from   " " salt" " earn " "  last   " " near " " form  "]
+        order-groups (group-by #(sort (.toCharArray (.trim %))) anagrams)]
+    (doseq [x order-groups] (println (second x)))))
 
 ;; linq45: GroupBy - Comparer, Mapped
 (defn linq45 []
-  (def anagrams ["from   " " salt" " earn " "  last   " " near " " form  "])
-  (def order-groups (group-by #(sort (.toCharArray (.trim %))) (map #(.toUpperCase %) anagrams)))
-
-  (doall (map #(println (get % 1)) order-groups))
-)
+  (let [anagrams ["from   " " salt" " earn " "  last   " " near " " form  "]
+        order-groups (group-by #(sort (.toCharArray (.trim %))) (map #(.toUpperCase %) anagrams))]
+    (doseq [x order-groups] (println (second x)))))
 
 (def examples [linq40 linq41 linq42 linq43 linq44 linq45])
