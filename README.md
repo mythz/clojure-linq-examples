@@ -9,29 +9,29 @@ Execute and display the results of all the examples with:
 
 _Note: Run specific examples by excluding others in [core.clj -main](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/core.clj)_
 
-Contributions into more idiomatic Clojure are welcome!
+Contributions into more idiomatic and readable Clojure examples are welcome!
 
 _you can also compare these LINQ examples in [Dart](https://github.com/dartist/101LinqSamples)_
 
-### [LINQ - Restriction Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_restrictions.clj)
-### [LINQ - Projection Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_projections.clj)
-### [LINQ - Partitioning Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_partitioning.clj)
-### [LINQ - Ordering Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_ordering.clj)
-### [LINQ - Grouping Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_grouping.clj)
-### [LINQ - Set Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_setoperators.clj)
-### [LINQ - Conversion Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_conversions.clj)
-### [LINQ - Element Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_elementoperators.clj)
-### [LINQ - Generation Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_generationoperators.clj)
-### [LINQ - Quantifiers](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_quantifiers.clj)
-### [LINQ - Aggregate Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_aggregateoperators.clj)
-### [LINQ - Miscellaneous Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_miscoperators.clj)
-### [LINQ - Query Execution](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_queryexecution.clj)
-### [LINQ - Join Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_joinoperators.clj)
+#### [LINQ - Restriction Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_restrictions.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-09787825)
+#### [LINQ - Projection Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_projections.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Partitioning-Operators-c68aaccc)
+#### [LINQ - Partitioning Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_partitioning.clj) / [MSDN C#](http://code.msdn.microsoft.com/SQL-Ordering-Operators-050af19e)
+#### [LINQ - Ordering Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_ordering.clj) / [MSDN C#](http://code.msdn.microsoft.com/SQL-Ordering-Operators-050af19e)
+#### [LINQ - Grouping Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_grouping.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-Grouping-c62703ea)
+#### [LINQ - Set Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_setoperators.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Set-Operators-374f34fe)
+#### [LINQ - Conversion Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_conversions.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Conversion-Operators-e4e59714)
+#### [LINQ - Element Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_elementoperators.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Element-Operators-0f3f12ce)
+#### [LINQ - Generation Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_generationoperators.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Generation-Operators-8a3fbff7)
+#### [LINQ - Quantifiers](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_quantifiers.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Quantifiers-f00e7e3e)
+#### [LINQ - Aggregate Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_aggregateoperators.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Aggregate-Operators-c51b3869)
+#### [LINQ - Miscellaneous Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_miscoperators.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Miscellaneous-6b72bb2a)
+#### [LINQ - Query Execution](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_queryexecution.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Query-Execution-ce0d3b95)
+#### [LINQ - Join Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_joinoperators.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Join-Operators-dabef4e9)
 
 
 ##  Side-by-side - C# LINQ vs Clojure
 
-For a side-by-side comparison, the original **C#** source code is displayed above the equivalent **Dart** translation.
+For a side-by-side comparison, the original **C#** source code is displayed above the equivalent **Clojure** translation.
 
   - The **Output** shows the console output of running the **Clojure** sample.
   - Outputs ending with `...` illustrates only a partial response is displayed.
@@ -1213,7 +1213,7 @@ public class CaseInsensitiveComparer : IComparer<string>
 }
 ```
 
-### Dart utils added
+### Clojure utils added
 
 ```clojure
 (defn case-insensitive-compare [s1 s2]
@@ -2600,14 +2600,6 @@ public void Linq64()
 
 LINQ - Generation Operators
 ---------------------------
-### Dart utils added
-
-```clojure
-List range(int from, [int to]) =>
-  to != null
-    ? new List.generate(to, (x) => x + from)
-    : new List.generate(from, (x) => x);
-```
 
 ### linq65: Range
 ```csharp
@@ -3785,7 +3777,7 @@ public void Linq101()
 LINQ - Join Operators
 ---------------------
 
-### Dart utils added
+### Clojure utils added
 
 ```clojure
 join(Iterable seq, Iterable withSeq, bool match(x,y)) =>
