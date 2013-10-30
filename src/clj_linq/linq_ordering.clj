@@ -114,7 +114,7 @@
   (doall (map println sorted-words))
 )
 
-;;linq39: Reverse
+;; linq39: Reverse
 (defn linq39 []
   (def digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"])
 
@@ -122,7 +122,7 @@
                           (filter #(= (get % 1) \i))
                           reverse))
 
-  (println "Sorted digits:")
+  (println "A backwards list of the digits with a second character of 'i':")
   (doall (map println sorted-digits))
 )
 

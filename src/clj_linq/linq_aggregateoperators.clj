@@ -1,6 +1,8 @@
 (ns clj-linq.linq-aggregateoperators
   (:require [clj-linq.data :refer :all]))
 
+(defn average [coll] (/ (reduce + coll) (count coll)))
+
 ;; linq73: Count - Simple
 (defn linq73 []
   (def factors-of-300 [2 2 3 5 5])
@@ -179,8 +181,6 @@
   (doall (map println categories))
 )
 
-(defn average [coll] (/ (reduce + coll) (count coll)))
-
 ;; linq89: Average - Simple
 (defn linq89 []
   (def numbers [5 4 1 3 9 8 6 7 2 0])
@@ -231,8 +231,6 @@
 
   (println "Ending balance:" end-balance)
 )
-
-
 
 (def examples [linq73 linq74 linq76 linq77 linq78 linq79 linq80 linq81 linq82 linq83
                linq84 linq85 linq86 linq87 linq88 linq89 linq90 linq91 linq92 linq93])

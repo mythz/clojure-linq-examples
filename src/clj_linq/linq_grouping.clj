@@ -2,6 +2,7 @@
   (:require [clj-linq.data :refer :all]
             [clj-time.core :as time]))
 
+(defn anagram-comparer [a b] (compare (sort (.toCharArray a)) (sort (.toCharArray b))))
 
 ;; linq40: GroupBy - Simple 1
 (defn linq40 []
@@ -53,8 +54,6 @@
 
   (doall (map println customer-order-groups))
 )
-
-(defn anagram-comparer [a b] (compare (sort (.toCharArray a)) (sort (.toCharArray b))))
 
 ;; linq44: GroupBy - Comparer
 (defn linq44 []

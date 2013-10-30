@@ -9,7 +9,7 @@
   (def all-numbers (flatten [numbers-a numbers-b]))
 
   (println "All numbers from both arrays:")
-  (println all-numbers)
+  (doall (map println all-numbers))
 )
 
 ;; linq95: Concat - 2

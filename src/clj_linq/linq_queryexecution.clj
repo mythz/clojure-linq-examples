@@ -34,10 +34,7 @@
   (println "Second run numbers <= 3")
   (binding [numbers (map #(* -1 %) numbers)]
     (doall (map println (low-numbers))))
-
 )
 
 (def examples [linq99 linq100 linq101])
-
-;(linq101)
 

@@ -18,8 +18,7 @@
     (->> products
          (group-by :category)
          (filter #(some (fn [p] (= (:units-in-stock p) 0)) (get % 1)))
-         (map #(hash-map :category (get % 0), :products (get % 1)))
-         ))
+         (map #(hash-map :category (get % 0), :products (get % 1)))))
 
   (doall (map println product-groups))
 )
