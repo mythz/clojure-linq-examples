@@ -4,7 +4,6 @@ pom.xml
 /classes/
 /targets/
 .lein-deps-sum
-
 .lein-repl-history
-
-.lein-repl-history
+.nrepl-port
+*.dependencies
