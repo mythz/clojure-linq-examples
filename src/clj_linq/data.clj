@@ -7,11 +7,7 @@
   ([] [])
   ([a1] a1)
   ([a1 a2] [a1 a2])
-  ([a1 a2 & args] (concat [a1 a2] args))
-  )
-
-(defn with-index [a]
-  (map-indexed pass-thru a))
+  ([a1 a2 & args] (concat [a1 a2] args)))
 
 (defn log [a]
   (println a)

@@ -870,6 +870,18 @@ public void Linq19()
 LINQ - Partitioning Operators
 -----------------------------
 
+### Clojure utils added
+```clojure
+(defn pass-thru
+  ([] [])
+  ([a1] a1)
+  ([a1 a2] [a1 a2])
+  ([a1 a2 & args] (concat [a1 a2] args)))
+
+(defn with-index [a]
+  (map-indexed pass-thru a))
+```
+
 ### linq20: Take - Simple
 ```csharp
 //c#
