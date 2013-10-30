@@ -59,7 +59,7 @@ public void Linq1()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq1 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         low-numbers (for [n numbers :when (< n 5)] n)]
@@ -96,7 +96,7 @@ public void Linq2()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq2 []
   (let [products products-list
         sold-out-products (for [p products
@@ -135,7 +135,7 @@ public void Linq3()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq3 []
   (let [products products-list
         expensive-in-stock-products
@@ -181,7 +181,7 @@ public void Linq4()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq4 []
   (let [customers customers-list
         wa-customers (filter #(= (:region %) "WA") customers)]
@@ -220,7 +220,7 @@ public void Linq5()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq5 []
   (let [digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
         short-digits
@@ -263,7 +263,7 @@ public void Linq6()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq6 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         nums-plus-one (map inc numbers)]
@@ -303,7 +303,7 @@ public void Linq7()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq7 []
   (let [products products-list
         product-names (map #(:product-name %) products)]
@@ -340,7 +340,7 @@ public void Linq8()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq8 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         strings ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
@@ -380,7 +380,7 @@ public void Linq9()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq9 []
   (let [words ["aPPLE", "BlUeBeRrY", "cHeRry"]
         upper-lower-words
@@ -413,7 +413,7 @@ public void Linq10()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq10 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         strings ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
@@ -454,7 +454,7 @@ public void Linq11()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq11 []
   (let [products products-list
         product-infos
@@ -489,7 +489,7 @@ public void Linq12()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq12 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         nums-in-place
@@ -533,7 +533,7 @@ public void Linq13()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq13 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
@@ -574,7 +574,7 @@ public void Linq14()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq14 []
   (let [numbers-a [0 2 4 5 6 8 9]
         numbers-b [1 3 5 7 8]
@@ -624,7 +624,7 @@ public void Linq15()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq15 []
   (let [customers customers-list
         orders
@@ -661,7 +661,7 @@ public void Linq16()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq16 []
   (let [customers customers-list
         orders
@@ -699,7 +699,7 @@ public void Linq17()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq17 []
   (let [customers customers-list
         orders
@@ -738,7 +738,7 @@ public void Linq18()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq18 []
   (let [customers customers-list
         cutoff-date (time/date-time 1997 1 1)
@@ -787,7 +787,7 @@ public void Linq19()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq19 []
   (let [customers customers-list
         customer-orders
@@ -831,7 +831,7 @@ public void Linq20()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq20 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         first-3-numbers (take 3 numbers)]
@@ -867,7 +867,7 @@ public void Linq21()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq21 []
   (let [customers customers-list
         first-3-wa-orders
@@ -905,7 +905,7 @@ public void Linq22()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq22 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         all-but-first-4-numbers (drop 4 numbers)]
@@ -945,7 +945,7 @@ public void Linq23()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq23 []
   (let [customers customers-list
         all-but-first-2-orders
@@ -997,7 +997,7 @@ public void Linq24()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq24 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         first-numbers-less-than-6 (take-while #(< % 6) numbers)]
@@ -1029,7 +1029,7 @@ public void Linq25()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq25 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         first-small-numbers
@@ -1062,7 +1062,7 @@ public void Linq26()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq26 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         all-but-first-3-numbers (drop-while #(not= (mod % 3) 0) numbers)]
@@ -1097,7 +1097,7 @@ public void Linq27()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq27 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         later-numbers
@@ -1173,7 +1173,7 @@ public void Linq28()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq28 []
   (let [words ["cherry" "apple" "blueberry"]
         sorted-words (sort words)]
@@ -1207,7 +1207,7 @@ public void Linq29()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq29 []
   (let [words ["cherry" "apple" "blueberry"]
         sorted-words (sort-by count words)]
@@ -1237,7 +1237,7 @@ public void Linq30()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq30 []
   (let [products products-list
         sorted-products (sort-by :product-name products)]
@@ -1265,7 +1265,7 @@ public void Linq31()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq31 []
   (let [words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"]
         sorted-words (sort-by identity case-insensitive-compare words)]
@@ -1300,7 +1300,7 @@ public void Linq32()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq32 []
   (let [dbls [1.7 2.3 1.9 4.1 2.9]
         sorted-doubles (reverse (sort dbls))]
@@ -1332,7 +1332,7 @@ public void Linq33()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq33 []
   (let [products products-list
         sorted-products (reverse (sort-by :units-in-stock products))]
@@ -1360,7 +1360,7 @@ public void Linq34()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq34 []
   (let [words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"]
         sorted-words (->> words
@@ -1397,7 +1397,7 @@ public void Linq35()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq35 []
   (let [digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
         sorted-digits (order-by [count identity] digits)]
@@ -1433,7 +1433,7 @@ public void Linq36()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq36 []
   (let [words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"]
         sorted-words (order-by [count (fn [x] (.toLowerCase x))] words)]
@@ -1464,7 +1464,7 @@ public void Linq37()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq37 []
   (let [products products-list
         sorted-products (order-by [:category #(* -1 (:unit-price  %))] products)]
@@ -1498,7 +1498,7 @@ public void Linq38()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq38 []
   (let [words ["aPPLE" "AbAcUs" "bRaNcH" "BlUeBeRrY" "ClOvEr" "cHeRry"]
         sorted-words (order-by-comparers
@@ -1537,7 +1537,7 @@ public void Linq39()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq39 []
   (let [digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
         sorted-digits (->> digits
@@ -1610,7 +1610,7 @@ public void Linq40()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq40 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         number-groups (for [g (group-by #(mod % 5) numbers)] 
@@ -1660,7 +1660,7 @@ public void Linq41()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq41 []
   (let [words ["blueberry" "chimpanzee" "abacus" "banana" "apple" "cheese"]
         word-groups (for [g (group-by #(get % 0) words)] 
@@ -1698,7 +1698,7 @@ public void Linq42()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq42 []
   (let [products products-list
         order-groups (for [g (group-by #(:category %) products)] 
@@ -1741,7 +1741,7 @@ public void Linq43()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq43 []
   (let [customers customers-list
         customer-order-groups
@@ -1772,7 +1772,7 @@ public void Linq44()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq44 []
   (let [anagrams ["from   " " salt" " earn " "  last   " " near " " form  "]
         order-groups (group-by #(sort (.toCharArray (.trim %))) anagrams)]
@@ -1802,7 +1802,7 @@ public void Linq45()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq45 []
   (let [anagrams ["from   " " salt" " earn " "  last   " " near " " form  "]
         order-groups (group-by #(sort (.toCharArray (.trim %))) (map #(.toUpperCase %) anagrams))]
@@ -1835,7 +1835,7 @@ public void Linq46()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq46 []
   (let [factors-of-300 [2, 2, 3, 5, 5]
         unique-factors (distinct factors-of-300)]
@@ -1869,7 +1869,7 @@ public void Linq47()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq47 []
   (let [products products-list
         category-names (->> products
@@ -1908,7 +1908,7 @@ public void Linq48()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq48 []
   (let [numbers-a [0 2 4 5 6 8 9]
         numbers-b [1 3 5 7 8]
@@ -1955,7 +1955,7 @@ public void Linq49()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq49 []
   (let [products products-list
         customers customers-list
@@ -2011,7 +2011,7 @@ public void Linq50()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq50 []
   (let [numbers-a [0 2 4 5 6 8 9]
         numbers-b [1 3 5 7 8]
@@ -2050,7 +2050,7 @@ public void Linq51()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq51 []
   (let [products products-list
         customers customers-list
@@ -2101,7 +2101,7 @@ public void Linq52()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq52 []
   (let [numbers-a [0 2 4 5 6 8 9]
         numbers-b [1 3 5 7 8]
@@ -2143,7 +2143,7 @@ public void Linq53()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq53 []
   (let [products products-list
         customers customers-list
@@ -2185,7 +2185,7 @@ public void Linq54()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq54 []
   (let [dbls [1.7 2.3 1.9 4.1 2.9]
         sorted-doubles (->> dbls sort reverse)]
@@ -2220,7 +2220,7 @@ public void Linq55()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq55 []
   (let [words ["cherry", "apple", "blueberry"]
         sorted-words (->> words
@@ -2252,7 +2252,7 @@ public void Linq56()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq56 []
   (let [sorted-records [{:name "Alice", :score 50}
                         {:name "Bob", :score 40}
@@ -2283,7 +2283,7 @@ public void Linq57()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq57 []
   (let [numbers [nil 1.0 "two" 3 "four" 5 "six" 7.0]
         dbls (filter #(= (type %) java.lang.Double) numbers)]
@@ -2317,7 +2317,7 @@ public void Linq58()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq58 []
   (let [products products-list
         product-12 (->> products
@@ -2342,7 +2342,7 @@ public void Linq59()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq59 []
   (let [strings ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
         starts-with-o (first (filter #(= (get % 0) \o) strings))]
@@ -2365,7 +2365,7 @@ public void Linq61()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq61 []
   (let [numbers []
         first-num-or-default (get numbers 0 0)]
@@ -2388,7 +2388,7 @@ public void Linq62()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq62 []
   (let [products products-list
         product-789 (->> products
@@ -2417,7 +2417,7 @@ public void Linq64()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq64 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         fourth-low-num (->> numbers
@@ -2450,7 +2450,7 @@ public void Linq65()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq65 []
   (let [numbers (for [n (range 100 151)] 
                   {:number n,
@@ -2486,7 +2486,7 @@ public void Linq66()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq66 []
   (let [numbers (repeat 10 7)]
     (doseq [n numbers] (println n))))
@@ -2521,7 +2521,7 @@ public void Linq67()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq67 []
   (let [words ["believe" "relief" "receipt" "field"]
         i-after-e (some #(.contains % "ie") words)]
@@ -2547,7 +2547,7 @@ public void Linq69()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq69 []
   (let [products products-list
         product-groups
@@ -2575,7 +2575,7 @@ public void Linq70()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq70 []
   (let [numbers [1 11 3 19 41 65 19]
         only-odd (every? #(= (mod % 2) 1) numbers)]
@@ -2602,7 +2602,7 @@ public void Linq72()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq72 []
   (let [products products-list
         product-groups
@@ -2639,7 +2639,7 @@ public void Linq73()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq73 []
   (let [factors-of-300 [2 2 3 5 5]
         unique-factors (count (distinct factors-of-300))]    
@@ -2662,7 +2662,7 @@ public void Linq74()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq74 []
   (let [numbers [4 5 1 3 9 0 6 7 2 0]
         odd-numbers (count (for [n numbers :when (= 1 (mod n 2))] n))]
@@ -2687,7 +2687,7 @@ public void Linq76()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq76 []
   (let [customers customers-list
         order-counts 
@@ -2722,7 +2722,7 @@ public void Linq77()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq77 []
   (let [products products-list
         category-counts
@@ -2756,7 +2756,7 @@ public void Linq78()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq78 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         num-sum (reduce + numbers)]
@@ -2779,7 +2779,7 @@ public void Linq79()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq79 []
   (let [words ["cherry", "apple", "blueberry"]
         total-chars (reduce + (map count words))]
@@ -2805,7 +2805,7 @@ public void Linq80()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq80 []
   (let [products products-list
         categories
@@ -2840,7 +2840,7 @@ public void Linq81()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq81 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         min-num (apply min numbers)]
@@ -2863,7 +2863,7 @@ public void Linq82()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq82 []
   (let [words ["cherry", "apple", "blueberry"]
         shortest-word (apply min (map count words))]
@@ -2889,7 +2889,7 @@ public void Linq83()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq83 []
   (let [products products-list
         categories
@@ -2927,7 +2927,7 @@ public void Linq84()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq84 []
   (let [products products-list
         categories (->> products
@@ -2963,7 +2963,7 @@ public void Linq85()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq85 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         max-num (apply max numbers)]
@@ -2986,7 +2986,7 @@ public void Linq86()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq86 []
   (let [words ["cherry", "apple", "blueberry"]
         longest-word (apply max (map count words))]
@@ -3012,7 +3012,7 @@ public void Linq87()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq87 []
   (let [products products-list
         categories
@@ -3051,7 +3051,7 @@ public void Linq88()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq88 []
   (let [products products-list
         categories
@@ -3088,7 +3088,7 @@ public void Linq89()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq89 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         avg (average numbers)]
@@ -3111,7 +3111,7 @@ public void Linq90()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq90 []
   (let [words ["cherry", "apple", "blueberry"]
         average-length (average (map count words))]
@@ -3137,7 +3137,7 @@ public void Linq91()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq91 []
   (let [products products-list
         categories
@@ -3171,7 +3171,7 @@ public void Linq92()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq92 []
   (let [dbls [1.7 2.3 1.9 4.1 2.9]
         product (reduce * dbls)]
@@ -3199,7 +3199,7 @@ public void Linq93()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq93 []
   (let [start-balance 100
         attempted-withdrawls [20 10 40 50 10 70 30]
@@ -3233,7 +3233,7 @@ public void Linq94()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq94 []
   (let [numbers-a [0 2 4 5 6 8 9]
         numbers-b [1 3 5 7 8]
@@ -3282,7 +3282,7 @@ public void Linq95()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq95 []
   (let [products products-list
         customers customers-list
@@ -3317,7 +3317,7 @@ public void Linq96()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq96 []
   (let [words-a ["cherry" "apple" "blueberry"]
         words-b ["cherry" "apple" "blueberry"]
@@ -3342,7 +3342,7 @@ public void Linq97()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq97 []
   (let [words-a ["cherry" "apple" "blueberry"]
         words-b ["apple" "blueberry" "cherry"]
@@ -3381,7 +3381,7 @@ public void Linq99()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq99 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         i (atom 0)
@@ -3417,7 +3417,7 @@ public void Linq100()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq100 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         i (atom 0)
@@ -3464,7 +3464,7 @@ public void Linq101()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq101 []
   (def ^:dynamic numbers [5 4 1 3 9 8 6 7 2 0])
   
@@ -3535,7 +3535,7 @@ public void Linq102()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq102 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
@@ -3587,7 +3587,7 @@ public void Linq103()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq103 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
@@ -3655,7 +3655,7 @@ public void Linq104()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq104 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
@@ -3712,7 +3712,7 @@ public void Linq105()
 }
 ```
 ```clojure
-//clojure
+;;clojure
 (defn linq105 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
