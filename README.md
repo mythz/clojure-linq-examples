@@ -183,15 +183,13 @@ public void Linq4()
 ```clojure
 //clojure
 (defn linq4 []
-  (def customers customers-list)
-  (def wa-customers
-    (filter #(= (:region %) "WA") customers))
-
-  (println "Customers from Washington and their orders:")
-  (doseq [c wa-customers]
-    (println "Customer" (:customer-id c) ": " (:company-name c) ":")
-    (doseq [o (:orders c)]
-      (println "    Order" (:order-id o) ":" (:order-date o)))))
+  (let [customers customers-list
+        wa-customers (filter #(= (:region %) "WA") customers)]
+    (println "Customers from Washington and their orders:")
+    (doseq [c wa-customers]
+      (println "Customer" (:customer-id c) ": " (:company-name c) ":")
+      (doseq [o (:orders c)]
+        (println "    Order" (:order-id o) ":" (:order-date o))))))
 ```
 #### Output
 
@@ -226,7 +224,7 @@ public void Linq5()
 (defn linq5 []
   (let [digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
         short-digits
-        (for [[i digit] (map-indexed (fn [i digit] [i digit]) digits)
+        (for [[i digit] (map-indexed vector digits)
               :when (> i (count digit))]
           digit)]
     (println "Short digits:")
@@ -822,18 +820,6 @@ public void Linq19()
 LINQ - Partitioning Operators
 -----------------------------
 
-### Clojure utils added
-```clojure
-(defn pass-thru
-  ([] [])
-  ([a1] a1)
-  ([a1 a2] [a1 a2])
-  ([a1 a2 & args] (concat [a1 a2] args)))
-
-(defn with-index [a]
-  (map-indexed pass-thru a))
-```
-
 ### linq20: Take - Simple
 ```csharp
 //c#
@@ -1056,7 +1042,7 @@ public void Linq25()
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         first-small-numbers
         (map (fn [[i num]] num)
-             (take-while (fn [[i num]] (>= num i)) (with-index numbers)))]
+             (take-while (fn [[i num]] (>= num i)) (map-indexed vector numbers)))]
     (println "First numbers not less than their position:")
   (doseq [n first-small-numbers] (println n))))
 ```
@@ -1123,7 +1109,7 @@ public void Linq27()
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         later-numbers
         (map (fn [[i num]] num)
-             (drop-while (fn [[i num]] (>= num i)) (with-index numbers)))]
+             (drop-while (fn [[i num]] (>= num i)) (map-indexed vector numbers)))]
     (println "All elements starting from first element less than its position:")
     (doseq [n later-numbers] (println n))))
 ```

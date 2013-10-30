@@ -1,9 +1,6 @@
 (ns clj-linq.linq-partitioning
   (:require [clj-linq.data :refer :all]))
 
-(defn with-index [a]
-  (map-indexed pass-thru a))
-
 ;; linq20: Select - Simple 1
 (defn linq20 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
@@ -59,7 +56,7 @@
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         first-small-numbers
         (map (fn [[i num]] num)
-             (take-while (fn [[i num]] (>= num i)) (with-index numbers)))]
+             (take-while (fn [[i num]] (>= num i)) (map-indexed vector numbers)))]
     (println "First numbers not less than their position:")
   (doseq [n first-small-numbers] (println n))))
 
@@ -75,7 +72,7 @@
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         later-numbers
         (map (fn [[i num]] num)
-             (drop-while (fn [[i num]] (>= num i)) (with-index numbers)))]
+             (drop-while (fn [[i num]] (>= num i)) (map-indexed vector numbers)))]
     (println "All elements starting from first element less than its position:")
     (doseq [n later-numbers] (println n))))
 

@@ -34,21 +34,19 @@
 
 ;; linq4: Where - Drilldown
 (defn linq4 []
-  (def customers customers-list)
-  (def wa-customers
-    (filter #(= (:region %) "WA") customers))
-
-  (println "Customers from Washington and their orders:")
-  (doseq [c wa-customers]
-    (println "Customer" (:customer-id c) ": " (:company-name c) ":")
-    (doseq [o (:orders c)]
-      (println "    Order" (:order-id o) ":" (:order-date o)))))
+  (let [customers customers-list
+        wa-customers (filter #(= (:region %) "WA") customers)]
+    (println "Customers from Washington and their orders:")
+    (doseq [c wa-customers]
+      (println "Customer" (:customer-id c) ": " (:company-name c) ":")
+      (doseq [o (:orders c)]
+        (println "    Order" (:order-id o) ":" (:order-date o))))))
 
 ;; linq5: Where - Indexed
 (defn linq5 []
   (let [digits ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
         short-digits
-        (for [[i digit] (map-indexed (fn [i digit] [i digit]) digits)
+        (for [[i digit] (map-indexed vector digits)
               :when (> i (count digit))]
           digit)]
     (println "Short digits:")
