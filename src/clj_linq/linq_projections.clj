@@ -77,11 +77,10 @@
 (defn linq14 []
   (let [numbers-a [0 2 4 5 6 8 9]
         numbers-b [1 3 5 7 8]
-        pairs
-        (flatten
-         (for [a numbers-a]
-           (for [b numbers-b :when (< a b)]
-             {:a a, :b b})))]
+        pairs (for [a numbers-a
+                    b numbers-b
+                    :when (< a b)]
+                {:a a, :b b})]
     (println "Pairs where a < b:")
     (doseq [pair pairs]
       (println (:a pair) "is less than" (:b pair)))))
@@ -90,37 +89,34 @@
 (defn linq15 []
   (let [customers customers-list
         orders
-        (flatten
-         (for [c customers]
-           (for [o (:orders c)
-                 :when (< (:total o) 500)]
-             {:customer-id (:customer-id c),
-              :order-id (:order-id o),
-              :total (:total o)})))]
+        (for [c customers
+              o (:orders c)
+              :when (< (:total o) 500)]
+          {:customer-id (:customer-id c),
+           :order-id (:order-id o),
+           :total (:total o)})]
     (doseq [o orders] (println o))))
 
 ;; linq16: SelectMany - Compound from 3
 (defn linq16 []
   (let [customers customers-list
         orders
-        (flatten
-         (for [c customers]
-           (for [o (:orders c)
-                 :when (time/after? (:order-date o) (time/date-time 1998 1 1))]
-             {:customer-id (:customer-id c),
-              :order-id (:order-id o),
-              :order-date (:order-date o)})))]
+        (for [c customers
+              o (:orders c)
+              :when (time/after? (:order-date o) (time/date-time 1998 1 1))]
+          {:customer-id (:customer-id c),
+           :order-id (:order-id o),
+           :order-date (:order-date o)})]
     (doseq [o orders] (println o))))
 
 ;;linq17: SelectMany - from Assignment
 (defn linq17 []
   (let [customers customers-list
         orders
-        (flatten
-         (for [c customers]
-           (for [o (:orders c)
-                 :when (>= (:total o) 2000)]
-             {:customer-id (:customer-id c), :order-id (:order-id o), :total (:total o)})))]
+        (for [c customers
+              o (:orders c)
+              :when (>= (:total o) 2000)]
+          {:customer-id (:customer-id c), :order-id (:order-id o), :total (:total o)})]
     (doseq [o orders] (println o))))
 
 ;;linq18: SelectMany - Multiple from
@@ -128,12 +124,11 @@
   (let [customers customers-list
         cutoff-date (time/date-time 1997 1 1)
         orders
-        (flatten
-         (for [c customers
-               :when (= (:region c) "WA")]
-           (for [o (:orders c)
-                 :when (time/after? (:order-date o) cutoff-date)]
-             {:customer-id (:customer-id c), :order-id (:order-id o)})))]
+        (for [c customers
+              :when (= (:region c) "WA")
+              o (:orders c)
+              :when (time/after? (:order-date o) cutoff-date)]
+          {:customer-id (:customer-id c), :order-id (:order-id o)})]
     (doseq [o orders] (println o))))
 
 ;;linq19: SelectMany - Indexed
@@ -147,6 +142,15 @@
                  (:orders c)))
           customers))]
     (doseq [x customer-orders] (println x))))
+
+(defn linq19 []
+  (let [customers customers-list
+        customer-orders
+        (for [[i c] (map-indexed vector customers)
+              o (:orders c)]
+          (str "Customer #" (inc i) " has an order with OrderID " (:order-id o)))]
+    (doseq [x customer-orders] (println x))))
+
 
 (def examples [linq6  linq7  linq8 linq9 linq10 linq11 linq12 linq13 linq14 linq15 linq16
                linq17 linq18 linq19])

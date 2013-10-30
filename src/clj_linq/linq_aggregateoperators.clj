@@ -81,13 +81,11 @@
 ;; linq84: Min - Elements
 (defn linq84 []
   (let [products products-list
-        categories (->> products
-         (group-by :category)
-         (map (fn [g]
-           (let [min-price (apply min (map :unit-price (second g)))]
-             {:category (first g)
-              :cheapest-products (for [p (second g) :when (= (:unit-price p) min-price)] p)
-              }))))]
+        categories
+        (for [g (group-by :category products)
+              :let [min-price (apply min (map :unit-price (second g)))]]
+          {:category (first g)
+           :cheapest-products (for [p (second g) :when (= (:unit-price p) min-price)] p)})]
     (doseq [c categories] (println c))))
 
 ;; linq85: Max - Simple
@@ -109,8 +107,8 @@
         (->> products
              (group-by :category)
              (map #(identity
-                   {:category (get % 0),
-                    :most-expensive-price (apply max (map :unit-price (get % 1)))})))]
+                    {:category (get % 0),
+                     :most-expensive-price (apply max (map :unit-price (get % 1)))})))]
     (doseq [c categories] (println c))))
 
 ;; linq88: Max - Elements

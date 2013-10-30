@@ -13,13 +13,12 @@
   (let [customers customers-list
         first-3-wa-orders
         (take 3
-              (flatten
-               (for [c customers
-                     :when (= (:region c) "WA")]
-                 (for [o (:orders c)]
-                   {:customer-id (:customer-id c),
-                    :order-id (:order-id o),
-                    :order-date (:order-date o)}))))]
+              (for [c customers
+                    :when (= (:region c) "WA")
+                    o (:orders c)]
+                {:customer-id (:customer-id c),
+                 :order-id (:order-id o),
+                 :order-date (:order-date o)}))]
     (println "First 3 orders in WA:")
     (doseq [x first-3-wa-orders] (println x))))
 
@@ -34,13 +33,13 @@
 (defn linq23 []
   (let [customers customers-list
         all-but-first-2-orders
-        (drop 2 (flatten
-                 (for [c customers
-                       :when (= (:region c) "WA")]
-                   (for [o (:orders c)]
-                     {:customer-id (:customer-id c),
-                      :order-id (:order-id o),
-                      :order-date (:order-date o)}))))]
+        (drop 2
+              (for [c customers
+                    :when (= (:region c) "WA")
+                    o (:orders c)]
+                {:customer-id (:customer-id c),
+                 :order-id (:order-id o),
+                 :order-date (:order-date o)}))]
     (println "All but first 2 orders in WA:")
     (doseq [o all-but-first-2-orders] (println o))))
 
@@ -59,6 +58,15 @@
              (take-while (fn [[i num]] (>= num i)) (map-indexed vector numbers)))]
     (println "First numbers not less than their position:")
   (doseq [n first-small-numbers] (println n))))
+
+(defn linq25 []
+  (let [numbers [5 4 1 3 9 8 6 7 2 0]
+        first-small-numbers
+        (for [[i num] (map-indexed vector numbers)
+              :while (>= num i)]
+          num)]
+    (println "First numbers not less than their position:")
+    (doseq [n first-small-numbers] (println n))))
 
 ;; linq26: SkipWhile - Simple
 (defn linq26 []

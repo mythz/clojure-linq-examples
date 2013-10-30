@@ -31,8 +31,8 @@
 (defn linq49 []
   (let [products products-list
         customers customers-list
-        product-first-chars (map #(get (:product-name %) 0) products)
-        customer-first-chars (map #(get (:company-name %) 0) customers)
+        product-first-chars (map #(first (:product-name %)) products)
+        customer-first-chars (map #(first (:company-name %)) customers)
         unique-first-chars (union (set product-first-chars) (set customer-first-chars))]
     (println "Unique first letters from Product names and Customer names:")
     (doseq [x unique-first-chars] (println x))))
@@ -49,8 +49,8 @@
 (defn linq51 []
   (let [products products-list
         customers customers-list
-        product-first-chars (map #(get (:product-name %) 0) products)
-        customer-first-chars (map #(get (:company-name %) 0) customers)
+        product-first-chars (map #(first (:product-name %)) products)
+        customer-first-chars (map #(first (:company-name %)) customers)
         common-first-chars (intersection (set product-first-chars) (set customer-first-chars))]
     (println "Common first letters from Product names and Customer names:")
     (doseq [x common-first-chars] (println x))))
@@ -67,8 +67,8 @@
 (defn linq53 []
   (let [products products-list
         customers customers-list
-        product-first-chars (map #(get (:product-name %) 0) products)
-        customer-first-chars (map #(get (:company-name %) 0) customers)
+        product-first-chars (map #(first (:product-name %)) products)
+        customer-first-chars (map #(first (:company-name %)) customers)
         product-only-first-chars (difference (set product-first-chars) (set customer-first-chars))]
     (println "First letters from Product names, but not from Customer names:")
     (doseq [x  product-only-first-chars] (println x))))

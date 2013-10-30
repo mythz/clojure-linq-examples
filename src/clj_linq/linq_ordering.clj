@@ -8,8 +8,9 @@
   (sort-by
    pass-thru
    (fn [a1 a2]
-     (let [ret (first (drop-while #(= 0 %) (map #(% a1 a2) comparers)))]
-       (if (nil? ret) 0 ret)))
+     (get (for [x (map #(% a1 a2) comparers)
+                :while (= x 0)] x)
+          0 0))
    xs))
 
 (defn order-by [fns xs]

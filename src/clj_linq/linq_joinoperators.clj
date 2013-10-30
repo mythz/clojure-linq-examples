@@ -9,10 +9,9 @@
 (defn linq102 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (flatten
-           (for [pc (join-group categories products #(= %1 (:category %2)))]
-             (for [x (:items pc)]
-               {:category (:key pc), :product-name (:product-name x)})))]
+        q (for [pc (join-group categories products #(= %1 (:category %2)))
+                x (:items pc)]
+            {:category (:key pc), :product-name (:product-name x)})]
     (doseq [v q]
       (println (:product-name v) ":" (:category v)))))
 
@@ -31,13 +30,12 @@
 (defn linq104 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (flatten
-           (for [pc (join-group categories products #(= %1 (:category %2)))]
-             (for [p (:items pc)]
-               {:category (:key pc),
-                :product-name (:product-name p)})))]
+        q (for [pc (join-group categories products #(= %1 (:category %2)))
+                p (:items pc)]
+            {:category (:key pc),
+             :product-name (:product-name p)})]
     (doseq [p q]
-    (println (:product-name p) ":" (:category p)))))
+      (println (:product-name p) ":" (:category p)))))
 
 ;; linq105: Left Outer Join
 (defn linq105 []

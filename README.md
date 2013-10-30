@@ -628,13 +628,12 @@ public void Linq15()
 (defn linq15 []
   (let [customers customers-list
         orders
-        (flatten
-         (for [c customers]
-           (for [o (:orders c) 
-                 :when (< (:total o) 500)]
-             {:customer-id (:customer-id c), 
-              :order-id (:order-id o), 
-              :total (:total o)})))]
+        (for [c customers
+              o (:orders c)
+              :when (< (:total o) 500)]
+          {:customer-id (:customer-id c), 
+           :order-id (:order-id o), 
+           :total (:total o)})]
     (doseq [o orders] (println o))))
 ```
 #### Output
@@ -666,13 +665,12 @@ public void Linq16()
 (defn linq16 []
   (let [customers customers-list
         orders
-        (flatten
-         (for [c customers]
-           (for [o (:orders c)
-                 :when (time/after? (:order-date o) (time/date-time 1998 1 1))]
-             {:customer-id (:customer-id c), 
-              :order-id (:order-id o), 
-              :order-date (:order-date o)})))]
+        (for [c customers
+              o (:orders c)
+              :when (time/after? (:order-date o) (time/date-time 1998 1 1))]
+          {:customer-id (:customer-id c), 
+           :order-id (:order-id o), 
+           :order-date (:order-date o)})]
     (doseq [o orders] (println o))))
 ```
 #### Output
@@ -705,11 +703,10 @@ public void Linq17()
 (defn linq17 []
   (let [customers customers-list
         orders
-        (flatten
-         (for [c customers]
-           (for [o (:orders c)
-                 :when (>= (:total o) 2000)]
-             {:customer-id (:customer-id c), :order-id (:order-id o), :total (:total o)})))]
+        (for [c customers
+              o (:orders c)
+              :when (>= (:total o) 2000)]
+          {:customer-id (:customer-id c), :order-id (:order-id o), :total (:total o)})]
     (doseq [o orders] (println o))))
 ```
 #### Output
@@ -746,12 +743,11 @@ public void Linq18()
   (let [customers customers-list
         cutoff-date (time/date-time 1997 1 1)
         orders
-        (flatten
-         (for [c customers 
-               :when (= (:region c) "WA")]
-           (for [o (:orders c)
-                 :when (time/after? (:order-date o) cutoff-date)]
-             {:customer-id (:customer-id c), :order-id (:order-id o)})))]
+        (for [c customers 
+              :when (= (:region c) "WA")
+              o (:orders c)
+              :when (time/after? (:order-date o) cutoff-date)]
+          {:customer-id (:customer-id c), :order-id (:order-id o)})]
     (doseq [o orders] (println o))))
 ```
 #### Output
@@ -795,12 +791,9 @@ public void Linq19()
 (defn linq19 []
   (let [customers customers-list
         customer-orders
-        (flatten
-         (map-indexed
-          (fn [i c]
-            (map #(str "Customer #" (inc i) " has an order with OrderID " (:order-id %))
-                 (:orders c)))
-          customers))]
+        (for [[i c] (map-indexed vector customers)
+              o (:orders c)]
+          (str "Customer #" (inc i) " has an order with OrderID " (:order-id o)))]
     (doseq [x customer-orders] (println x))))
 ```
 #### Output
@@ -879,13 +872,12 @@ public void Linq21()
   (let [customers customers-list
         first-3-wa-orders
         (take 3 
-              (flatten
-               (for [c customers 
-                     :when (= (:region c) "WA")]
-                 (for [o (:orders c)]
-                   {:customer-id (:customer-id c),
-                    :order-id (:order-id o),
-                    :order-date (:order-date o)}))))]
+              (for [c customers
+                    :when (= (:region c) "WA")
+                    o (:orders c)]
+                {:customer-id (:customer-id c),
+                 :order-id (:order-id o),
+                 :order-date (:order-date o)}))]
     (println "First 3 orders in WA:")
     (doseq [x first-3-wa-orders] (println x))))
 ```
@@ -957,13 +949,13 @@ public void Linq23()
 (defn linq23 []
   (let [customers customers-list
         all-but-first-2-orders
-        (drop 2 (flatten
-                 (for [c customers
-                       :when (= (:region c) "WA")]
-                   (for [o (:orders c)]
-                     {:customer-id (:customer-id c),
+        (drop 2 
+              (for [c customers
+                       :when (= (:region c) "WA")
+                      o (:orders c)]
+                   {:customer-id (:customer-id c),
                       :order-id (:order-id o),
-                      :order-date (:order-date o)}))))]
+                      :order-date (:order-date o)}))]
     (println "All but first 2 orders in WA:")
     (doseq [o all-but-first-2-orders] (println o))))
 ```
@@ -1041,8 +1033,9 @@ public void Linq25()
 (defn linq25 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         first-small-numbers
-        (map (fn [[i num]] num)
-             (take-while (fn [[i num]] (>= num i)) (map-indexed vector numbers)))]
+        (for [[i num] (map-indexed vector numbers)
+              :while (>= num i)]
+          num)]
     (println "First numbers not less than their position:")
   (doseq [n first-small-numbers] (println n))))
 ```
@@ -1151,8 +1144,9 @@ public class CaseInsensitiveComparer : IComparer<string>
   (sort-by
    pass-thru
    (fn [a1 a2]
-     (let [ret (first (drop-while #(= 0 %) (map #(% a1 a2) comparers)))]
-       (if (nil? ret) 0 ret)))
+     (get (for [x (map #(% a1 a2) comparers)
+                :while (= x 0)] x) 
+          0 0))
    xs))
 
 (defn order-by [fns xs]
@@ -1620,7 +1614,7 @@ public void Linq40()
 (defn linq40 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         number-groups (for [g (group-by #(mod % 5) numbers)] 
-                        {:remainder (g 0), :numbers (g 1)})]
+                        {:remainder (first g), :numbers (second g)})]
     (doseq [g number-groups]
       (println "Numbers with a remainder of" (:remainder g) "when divided by 5:")
       (doall (map println (:numbers g))))))
@@ -1708,7 +1702,7 @@ public void Linq42()
 (defn linq42 []
   (let [products products-list
         order-groups (for [g (group-by #(:category %) products)] 
-                       {:category (g 0), :products (g 1)})]
+                       {:category (first g), :products (second g)})]
     (doseq [x order-groups] (println x))))
 ```
 #### Output
@@ -1965,8 +1959,8 @@ public void Linq49()
 (defn linq49 []
   (let [products products-list
         customers customers-list
-        product-first-chars (map #(get (:product-name %) 0) products)
-        customer-first-chars (map #(get (:company-name %) 0) customers)
+        product-first-chars (map #(first (:product-name %)) products)
+        customer-first-chars (map #(first (:company-name %)) customers)
         unique-first-chars (union (set product-first-chars) (set customer-first-chars))]
     (println "Unique first letters from Product names and Customer names:")
     (doseq [x unique-first-chars] (println x))))
@@ -2060,8 +2054,8 @@ public void Linq51()
 (defn linq51 []
   (let [products products-list
         customers customers-list
-        product-first-chars (map #(get (:product-name %) 0) products)
-        customer-first-chars (map #(get (:company-name %) 0) customers)
+        product-first-chars (map #(first (:product-name %)) products)
+        customer-first-chars (map #(first (:company-name %)) customers)
         common-first-chars (intersection (set product-first-chars) (set customer-first-chars))]
     (println "Common first letters from Product names and Customer names:")
     (doseq [x common-first-chars] (println x))))
@@ -2153,8 +2147,8 @@ public void Linq53()
 (defn linq53 []
   (let [products products-list
         customers customers-list
-        product-first-chars (map #(get (:product-name %) 0) products)
-        customer-first-chars (map #(get (:company-name %) 0) customers)
+        product-first-chars (map #(first (:product-name %)) products)
+        customer-first-chars (map #(first (:company-name %)) customers)
         product-only-first-chars (difference (set product-first-chars) (set customer-first-chars))]
     (println "First letters from Product names, but not from Customer names:")
     (doseq [x  product-only-first-chars] (println x))))
@@ -3025,8 +3019,8 @@ public void Linq87()
         (->> products
              (group-by :category)
              (map #(identity 
-                   {:category (get % 0),
-                    :most-expensive-price (apply max (map :unit-price (get % 1)))})))]
+                    {:category (get % 0),
+                     :most-expensive-price (apply max (map :unit-price (get % 1)))})))]
     (doseq [c categories] (println c))))
 ```
 #### Output
@@ -3545,10 +3539,9 @@ public void Linq102()
 (defn linq102 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (flatten
-           (for [pc (join-group categories products #(= %1 (:category %2)))]
-             (for [x (:items pc)]
-               {:category (:key pc), :product-name (:product-name x)})))]
+        q (for [pc (join-group categories products #(= %1 (:category %2)))
+                x (:items pc)]
+            {:category (:key pc), :product-name (:product-name x)})]
     (doseq [v q]
       (println (:product-name v) ":" (:category v)))))
 ```
@@ -3666,11 +3659,10 @@ public void Linq104()
 (defn linq104 []
   (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
-        q (flatten
-           (for [pc (join-group categories products #(= %1 (:category %2)))]
-             (for [p (:items pc)]
-               {:category (:key pc),
-                :product-name (:product-name p)})))]
+        q (for [pc (join-group categories products #(= %1 (:category %2)))
+                p (:items pc)]
+             {:category (:key pc),
+              :product-name (:product-name p)})]
     (doseq [p q]
     (println (:product-name p) ":" (:category p)))))
 ```

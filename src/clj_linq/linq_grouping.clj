@@ -8,7 +8,7 @@
 (defn linq40 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         number-groups (for [g (group-by #(mod % 5) numbers)]
-                        {:remainder (g 0), :numbers (g 1)})]
+                        {:remainder (first g), :numbers (second g)})]
     (doseq [g number-groups]
       (println "Numbers with a remainder of" (:remainder g) "when divided by 5:")
       (doall (map println (:numbers g))))))
@@ -26,7 +26,7 @@
 (defn linq42 []
   (let [products products-list
         order-groups (for [g (group-by #(:category %) products)]
-                       {:category (g 0), :products (g 1)})]
+                       {:category (first g), :products (second g)})]
     (doseq [x order-groups] (println x))))
 
 ;; linq43: GroupBy - Nested
