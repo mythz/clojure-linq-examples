@@ -344,7 +344,7 @@ public void Linq8()
 (defn linq8 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
         strings ["zero" "one" "two" "three" "four" "five" "six" "seven" "eight" "nine"]
-        text-nums (map #(strings %) numbers)]
+        text-nums (map strings numbers)]
     (println "Number strings:")
     (doseq [n text-nums] (println n))))
 ```
@@ -458,11 +458,14 @@ public void Linq11()
 (defn linq11 []
   (let [products products-list
         product-infos
-        (for [p products] 
-          {:product-name (:product-name p), :category (:category p), :price (:unit-price p)})]
+        (for [p products]
+          {:product-name (:product-name p), 
+           :category (:category p), 
+           :price (:unit-price p)})]
     (println "Product Info:")
     (doseq [p product-infos]
-      (println (:product-name p) "is in the category" (:category p) "and costs" (:price p)))))
+      (println (:product-name p) "is in the category" (:category p) 
+               "and costs" (:price p)))))
 ```
 #### Output
 
