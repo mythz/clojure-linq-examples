@@ -1807,7 +1807,8 @@ public void Linq45()
 ;;clojure
 (defn linq45 []
   (let [anagrams ["from   " " salt" " earn " "  last   " " near " " form  "]
-        order-groups (group-by #(sort (.toCharArray (.trim %))) (map #(.toUpperCase %) anagrams))]
+        order-groups (group-by #(sort (.toCharArray (.trim %))) 
+                               (map #(.toUpperCase %) anagrams))]
     (doseq [x order-groups] (println (second x)))))
 ```
 #### Output
@@ -2151,7 +2152,8 @@ public void Linq53()
         customers customers-list
         product-first-chars (map #(first (:product-name %)) products)
         customer-first-chars (map #(first (:company-name %)) customers)
-        product-only-first-chars (difference (set product-first-chars) (set customer-first-chars))]
+        product-only-first-chars (difference (set product-first-chars) 
+                                             (set customer-first-chars))]
     (println "First letters from Product names, but not from Customer names:")
     (doseq [x  product-only-first-chars] (println x))))
 ```
@@ -2346,8 +2348,9 @@ public void Linq59()
 ```clojure
 ;;clojure
 (defn linq59 []
-  (let [strings ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-        starts-with-o (first (filter #(= (get % 0) \o) strings))]
+  (let [strings ["zero", "one", "two", "three", "four", 
+                 "five", "six", "seven", "eight", "nine"]
+        starts-with-o (first (filter #(= (first %) \o) strings))]
     (println "A string starting with 'o':" starts-with-o)))
 ```
 #### Output
@@ -2932,13 +2935,12 @@ public void Linq84()
 ;;clojure
 (defn linq84 []
   (let [products products-list
-        categories (->> products
-         (group-by :category)
-         (map (fn [g]
-           (let [min-price (apply min (map :unit-price (second g)))]
-             {:category (first g)
-              :cheapest-products (for [p (second g) :when (= (:unit-price p) min-price)] p)
-              }))))]
+        categories
+        (for [g (group-by :category products)
+              :let [min-price (apply min (map :unit-price (second g)))]]
+          {:category (first g)
+           :cheapest-products (for [p (second g) 
+                                    :when (= (:unit-price p) min-price)] p)})]
     (doseq [c categories] (println c))))
 ```
 #### Output
@@ -3057,13 +3059,11 @@ public void Linq88()
 (defn linq88 []
   (let [products products-list
         categories
-        (->> products
-             (group-by :category)
-             (map (fn [g]
-                    (let [max-price (apply max (map :unit-price (second g)))]
-                      {:category (first g)
-                       :most-expensive-products
-                       (for [p (second g) :when (= (:unit-price p) max-price)] p)}))))]
+        (for [g (group-by :category products)
+              :let [max-price (apply max (map :unit-price (second g)))]]
+          {:category (first g)
+           :most-expensive-products
+           (for [p (second g) :when (= (:unit-price p) max-price)] p)})]
     (doseq [c categories] (println c))))
 ```
 #### Output
@@ -3143,10 +3143,9 @@ public void Linq91()
 (defn linq91 []
   (let [products products-list
         categories
-        (->> products
-             (group-by :category)
-             (map #(identity {:category (get % 0),
-                              :average-price (average (map :unit-price (get % 1)))})))]
+        (for [g (group-by :category products)]
+          {:category (first g),
+           :average-price (average (map :unit-price (second g)))})]
     (doseq [c categories] (println c))))
 ```
 #### Output
@@ -3539,7 +3538,8 @@ public void Linq102()
 ```clojure
 ;;clojure
 (defn linq102 []
-  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+  (let [categories 
+        ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (for [pc (join-group categories products #(= %1 (:category %2)))
                 x (:items pc)]
@@ -3659,14 +3659,15 @@ public void Linq104()
 ```clojure
 ;;clojure
 (defn linq104 []
-  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+  (let [categories 
+        ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (for [pc (join-group categories products #(= %1 (:category %2)))
                 p (:items pc)]
-             {:category (:key pc),
-              :product-name (:product-name p)})]
+            {:category (:key pc),
+             :product-name (:product-name p)})]
     (doseq [p q]
-    (println (:product-name p) ":" (:category p)))))
+      (println (:product-name p) ":" (:category p)))))
 ```
 #### Output
 
@@ -3716,7 +3717,8 @@ public void Linq105()
 ```clojure
 ;;clojure
 (defn linq105 []
-  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+  (let [categories 
+        ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
            (for [pc (join-group categories products #(= %1 (:category %2)))]

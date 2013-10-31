@@ -85,7 +85,8 @@
         (for [g (group-by :category products)
               :let [min-price (apply min (map :unit-price (second g)))]]
           {:category (first g)
-           :cheapest-products (for [p (second g) :when (= (:unit-price p) min-price)] p)})]
+           :cheapest-products (for [p (second g)
+                                    :when (= (:unit-price p) min-price)] p)})]
     (doseq [c categories] (println c))))
 
 ;; linq85: Max - Simple
@@ -115,13 +116,11 @@
 (defn linq88 []
   (let [products products-list
         categories
-        (->> products
-             (group-by :category)
-             (map (fn [g]
-                    (let [max-price (apply max (map :unit-price (second g)))]
-                      {:category (first g)
-                       :most-expensive-products
-                       (for [p (second g) :when (= (:unit-price p) max-price)] p)}))))]
+        (for [g (group-by :category products)
+              :let [max-price (apply max (map :unit-price (second g)))]]
+          {:category (first g)
+           :most-expensive-products
+           (for [p (second g) :when (= (:unit-price p) max-price)] p)})]
     (doseq [c categories] (println c))))
 
 ;; linq89: Average - Simple
@@ -140,10 +139,9 @@
 (defn linq91 []
   (let [products products-list
         categories
-        (->> products
-             (group-by :category)
-             (map #(identity {:category (get % 0),
-                              :average-price (average (map :unit-price (get % 1)))})))]
+        (for [g (group-by :category products)]
+          {:category (first g),
+           :average-price (average (map :unit-price (second g)))})]
     (doseq [c categories] (println c))))
 
 ;; linq92: Aggregate - Simple

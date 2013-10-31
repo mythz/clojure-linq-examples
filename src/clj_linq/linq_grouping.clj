@@ -52,7 +52,8 @@
 ;; linq45: GroupBy - Comparer, Mapped
 (defn linq45 []
   (let [anagrams ["from   " " salt" " earn " "  last   " " near " " form  "]
-        order-groups (group-by #(sort (.toCharArray (.trim %))) (map #(.toUpperCase %) anagrams))]
+        order-groups (group-by #(sort (.toCharArray (.trim %)))
+                               (map #(.toUpperCase %) anagrams))]
     (doseq [x order-groups] (println (second x)))))
 
 (def examples [linq40 linq41 linq42 linq43 linq44 linq45])

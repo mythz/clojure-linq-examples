@@ -7,7 +7,8 @@
 
 ;; linq102: Cross Join
 (defn linq102 []
-  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+  (let [categories
+        ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (for [pc (join-group categories products #(= %1 (:category %2)))
                 x (:items pc)]
@@ -28,7 +29,8 @@
 
 ;; linq104: Cross Join with Group Join
 (defn linq104 []
-  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+  (let [categories
+        ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (for [pc (join-group categories products #(= %1 (:category %2)))
                 p (:items pc)]
@@ -39,7 +41,8 @@
 
 ;; linq105: Left Outer Join
 (defn linq105 []
-  (let [categories ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
+  (let [categories
+        ["Beverages", "Condiments", "Vegetables", "Dairy Products", "Seafood"]
         products products-list
         q (flatten
            (for [pc (join-group categories products #(= %1 (:category %2)))]

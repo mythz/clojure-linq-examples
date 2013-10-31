@@ -11,8 +11,9 @@
 
 ;; linq59: First - Condition
 (defn linq59 []
-  (let [strings ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-        starts-with-o (first (filter #(= (get % 0) \o) strings))]
+  (let [strings ["zero", "one", "two", "three", "four",
+                 "five", "six", "seven", "eight", "nine"]
+        starts-with-o (first (filter #(= (first %) \o) strings))]
     (println "A string starting with 'o':" starts-with-o)))
 
 ;; linq61: FirstOrDefault - Simple

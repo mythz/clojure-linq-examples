@@ -69,7 +69,8 @@
         customers customers-list
         product-first-chars (map #(first (:product-name %)) products)
         customer-first-chars (map #(first (:company-name %)) customers)
-        product-only-first-chars (difference (set product-first-chars) (set customer-first-chars))]
+        product-only-first-chars (difference (set product-first-chars)
+                                             (set customer-first-chars))]
     (println "First letters from Product names, but not from Customer names:")
     (doseq [x  product-only-first-chars] (println x))))
 
