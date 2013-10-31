@@ -578,11 +578,10 @@ public void Linq14()
 (defn linq14 []
   (let [numbers-a [0 2 4 5 6 8 9]
         numbers-b [1 3 5 7 8]
-        pairs
-        (flatten
-         (for [a numbers-a]
-           (for [b numbers-b :when (< a b)]
-             {:a a, :b b})))]
+        pairs (for [a numbers-a
+                    b numbers-b
+                    :when (< a b)]
+                {:a a, :b b})]
     (println "Pairs where a < b:")
     (doseq [pair pairs]
       (println (:a pair) "is less than" (:b pair)))))
