@@ -16,8 +16,8 @@
 ;; linq41: GroupBy - Simple 2
 (defn linq41 []
   (let [words ["blueberry" "chimpanzee" "abacus" "banana" "apple" "cheese"]
-        word-groups (for [g (group-by #(get % 0) words)]
-                      {:first-letter (g 0), :words (g 1)})]
+        word-groups (for [g (group-by #(first %) words)]
+                      {:first-letter (first g), :words (second g)})]
     (doseq [g word-groups]
       (println "Words that start with the letter: " (:first-letter g))
       (doall (map println (:words g))))))
