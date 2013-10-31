@@ -4,7 +4,7 @@
 ;; linq1: Where - Simple 1
 (defn linq1 []
   (let [numbers [5 4 1 3 9 8 6 7 2 0]
-        low-numbers (for [n numbers :when (< n 5)] n)]
+        low-numbers (filter #(< % 5) numbers)]
     (println "Numbers < 5:")
     (doseq [n low-numbers]
       (println n))))
