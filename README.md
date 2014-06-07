@@ -3,13 +3,22 @@
 
 Port of [C#'s' 101 LINQ Samples](http://code.msdn.microsoft.com/101-LINQ-Samples-3fb9811b) translated into Clojure.
 
+Compare Clojure to other LINQ examples written in:
+
+ - [Swift](https://github.com/mythz/swift-linq-examples)
+ - [Dart](https://github.com/dartist/101LinqSamples)
+
+### Running the examples
+
+You can choose to run specific examples by commenting the sections you're not interested in [core.clj -main](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/core.clj).
+
 Execute and display the results of all the examples with:
 
     lein run
 
-_Note: Run specific examples by excluding others in [core.clj -main](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/core.clj). You can also compare these [LINQ examples in Dart](https://github.com/dartist/101LinqSamples)._
+### Contents
 
-#### Contributions into more idiomatic and readable Clojure examples are welcome!
+The samples below mirrors the C# LINQ samples layout with the names of the top-level Clojure methods matching their corresponding C# examples.
 
 #### [LINQ - Restriction Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_restrictions.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-to-DataSets-09787825)
 #### [LINQ - Projection Operators](https://github.com/mythz/clojure-linq-examples/blob/master/src/clj_linq/linq_projections.clj) / [MSDN C#](http://code.msdn.microsoft.com/LINQ-Partitioning-Operators-c68aaccc)
