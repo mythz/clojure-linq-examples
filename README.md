@@ -1155,13 +1155,13 @@ public class CaseInsensitiveComparer : IComparer<string>
   (sort-by
    pass-thru
    (fn [a1 a2]
-     (get (for [x (map #(% a1 a2) comparers)
-                :while (= x 0)] x) 
+     (nth (for [x (map #(% a1 a2) comparers)
+                :when (not= x 0)] x)
           0 0))
    xs))
 
 (defn order-by [fns xs]
-  (order-by-comparers (map #(fn [a1 a2] (compare (% a1) (% a2))) fns) xs))
+  (sort-by (apply juxt fns) xs))
 ```
 
 ### linq28: OrderBy - Simple 1
