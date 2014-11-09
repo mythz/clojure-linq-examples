@@ -14,7 +14,7 @@
    xs))
 
 (defn order-by [fns xs]
-  (order-by-comparers (map #(fn [a1 a2] (compare (% a1) (% a2))) fns) xs))
+  (sort-by (apply juxt fns) xs))
 
 
 ;; linq28: SkipWhile - Simple
