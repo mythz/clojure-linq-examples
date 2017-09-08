@@ -10,6 +10,7 @@ Compare Clojure to other LINQ examples written in:
  - [Swift](https://github.com/mythz/swift-linq-examples)
  - [Dart](https://github.com/mythz/dart-linq-examples)
  - [Elixir](https://github.com/omnibs/elixir-linq-examples)
+ - [Templates](http://templates.servicestack.net/linq/restriction-operators)
 
 ### Running the examples
 
