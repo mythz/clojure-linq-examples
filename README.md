@@ -7,6 +7,7 @@ Compare Clojure to other LINQ examples written in:
 
  - [Java](https://github.com/mythz/java-linq-examples)
  - [Kotlin](https://github.com/mythz/kotlin-linq-examples)
+ - [Groovy](https://gitlab.com/svermeulen/groovy-linq-samples)
  - [Swift](https://github.com/mythz/swift-linq-examples)
  - [Dart](https://github.com/mythz/dart-linq-examples)
  - [Elixir](https://github.com/omnibs/elixir-linq-examples)
