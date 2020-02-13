@@ -1,7 +1,7 @@
 101 LINQ Samples in Clojure
 ===========================
 
-Port of [C#'s' 101 LINQ Samples](http://code.msdn.microsoft.com/101-LINQ-Samples-3fb9811b) translated into Clojure.
+Port of [C#'s' 101 LINQ Samples](https://github.com/dotnet/try-samples/tree/master/101-linq-samples) translated into Clojure.
 
 Compare Clojure to other LINQ examples written in:
 
